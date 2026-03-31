@@ -1,5 +1,7 @@
 Gestion Empresarial-Proyecto Universitario
 
+
+
 Descripcion
 
 Este sistema es una aplicacion de gestion empresarial desarrollada en c# que permite administrar las operaciones principales de una organizacion, integrando una base de datos normalizada a la Tercera Forma Normal (3FN).
