@@ -1,0 +1,125 @@
+-- Creacion de la base de datos
+-- IF NOT EXISTS, para definir que solo se crea si no existe
+
+CREATE DATABASE IF NOT EXISTS PitbullDB;
+
+-- Usamos la base de datos de Pitbull
+
+USE PitbullDB;
+
+-- -------------------------------------------------------- --
+
+-- Seccion de seguridad y acceso (RBAC) --
+-- Tabla de Roles que define los diferentes roles de usuario
+-- ROLES COMO GERENTE, OPERADOR, VENDEDOR
+CREATE TABLE Roles ( 
+IdRol INT auto_increment PRIMARY KEY,
+NombreRol VARCHAR(50) NOT NULL UNIQUE 
+);
+
+-- Tabla de Usuario que registra la información de los usuarios en el sistema
+CREATE TABLE Usuario (
+IdUsuario INT auto_increment PRIMARY KEY,
+NombreUsuario VARCHAR(50) NOT NULL UNIQUE,
+PasswordHash VARCHAR(500) NOT NULL, -- CLAVES INCRIPTADAS
+IdRol INT,
+Estado BIT DEFAULT 1, -- 1 es activo, 0 es inactivo
+FOREIGN KEY (IdRol) REFERENCES Roles(IdRol)
+);
+
+-- -------------------------------------------------------- --
+
+-- SECCION DE OPERACIONES Y ALMACEN --
+-- Tabla de Proveedores que almacena información de proveedores externos
+CREATE TABLE Proveedores (
+IdProveedor INT auto_increment PRIMARY KEY,
+NombreEmpresa VARCHAR (50) NOT NULL,
+Contacto VARCHAR (50) NOT NULL,
+Telefono VARCHAR (20) NOT NULL
+);
+
+-- SECCION DE ALMACEN PARA PRODUCTOS
+-- Tabla de Productos que gestiona el inventario del sistema
+CREATE TABLE Productos (
+IdProductos INT auto_increment PRIMARY KEY,
+CodigoBarras VARCHAR (100) UNIQUE, -- Asegura que el codigo de barra sea unico por producto
+NombreProducto VARCHAR (100) NOT NULL,
+Descripcion TEXT,
+PrecioCosto DECIMAL (10,2) NOT NULL, -- Costo Compra
+PrecioVenta DECIMAL (10,2) NOT NULL, -- Costo de Venta
+StockMinimo INT DEFAULT 5, -- Para la alerta de bajo stock
+IdProveedor INT,
+FOREIGN KEY (IdProveedor) REFERENCES Proveedores(IdProveedor)
+);
+
+--  Especificando datos de productos "Estados del producto"
+-- Tabla de Inventario_Stock que registra las cantidades actuales y reservadas de productos
+CREATE TABLE Inventario_Stock (
+IdStock INT auto_increment PRIMARY KEY,
+IdProductos INT,
+CantidadActual INT NOT NULL DEFAULT 0,
+CantidadReservada INT DEFAULT 0, -- Para la seccion de pedidos
+UltimaActualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (IdProductos) REFERENCES Productos (IdProductos)
+);
+
+-- ---------------------------------------------------------------------- --
+-- SECCION DE TRANSACCIONES Y FINANZAS --
+-- SECCION DE VENTAS
+-- Tabla de Ventas que registra las transacciones de ventas
+CREATE TABLE Ventas (
+IdVenta INT auto_increment PRIMARY KEY,
+FechaVenta DATETIME DEFAULT CURRENT_TIMESTAMP,
+IdUsuario INT, -- Quien hizo la venta
+TotalVenta DECIMAL (10,2),
+TipoVenta ENUM ('Directa', 'Pedido', 'Apartado') DEFAULT 'Directa',
+EstadoVenta BIT DEFAULT 1, -- 1 para pagado, 0 para pendiente
+FOREIGN KEY (IdUsuario) REFERENCES Usuario (IdUsuario)
+);
+
+-- Tabla de Detalle_Venta que almacena los detalles de cada venta
+CREATE TABLE Detalle_Venta (
+IdDetalle INT auto_increment PRIMARY KEY,
+IdVenta INT,
+IdProductos INT,
+Cantidad INT NOT NULL,
+PrecioVentaMomento DECIMAL (10,2) NOT NULL, -- Para el historial de ventas
+FOREIGN KEY (IdVenta) REFERENCES Ventas (IdVenta),
+FOREIGN KEY (IdProductos) REFERENCES Productos (IdProductos)
+);
+
+-- Tabla de Merma que lleva un registro de las mermas de productos
+CREATE TABLE Merma (
+IdMerma INT auto_increment PRIMARY KEY,
+IdProductos INT,
+CantidadMerma INT NOT NULL,
+Motivo VARCHAR (100),
+FechaMerma DATETIME DEFAULT CURRENT_TIMESTAMP,
+CostoPerdido DECIMAL (10,2),-- Cualculo de perdida con la formula Cantidad + Costo
+FOREIGN KEY (IdProductos) REFERENCES Productos (IdProductos)
+);
+
+-- Costo total del producto adquirido
+CREATE TABLE Gastos_Operativos (
+IdGastos INT auto_increment PRIMARY KEY,
+Descripcion VARCHAR (100),
+Monto DECIMAL (10,2) NOT NULL,
+FechaGasto DATETIME DEFAULT CURRENT_TIMESTAMP,
+IdProveedor INT, -- Si el gasto es de alfun servicio de algun proveedor en especifico, como "Fletes"
+FOREIGN KEY (IdProveedor) REFERENCES Proveedores (IdProveedor)
+);
+
+-- -------------------------------------------------------------- --
+
+-- insertamos datos de administrador para poder probar los avaces
+INSERT INTO Roles (NombreRol)
+VALUES ('Administrador'),('Gerente'),('Operador'),('Vendedor');
+
+INSERT INTO Usuario (NombreUsuario, PasswordHash, IdRol, Estado)
+VALUES ('admin', '$2a$11$9s4p9Z50.IunDfmvLzLh/.fT6V9V7.PzR8T1Zk7j6Y/F.uH5K1S2G', 1, 1);
+-- debido al uso de BCrypt una libreria de incriptado de datos la passwordHash del usuario debe de ser esta mientras se termina de desarrollar la app
+
+UPDATE usuario 
+SET PasswordHash = '$2a$11$jm3eUB2M5zWaUthV.TObfuaL7Fr.bGDvauXeK7ClcO.aGFVfYI7SS' 
+WHERE NombreUsuario = 'admin';
+SELECT IdUsuario, NombreUsuario, Estado, PasswordHash FROM usuario;
