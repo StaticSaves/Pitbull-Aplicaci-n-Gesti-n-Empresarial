@@ -1,1 +1,0 @@
-Aca se organiza todo al respecto con la base de datos ya sean script.sql o diagramas.
