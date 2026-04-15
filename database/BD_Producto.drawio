@@ -1,0 +1,261 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram name="Página-1" id="JbqXbP5ZTlFODqwpWpn3">
+    <mxGraphModel dx="2712" dy="2198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4kizEYEcBV5_phssOWoL-2" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="180" width="150" x="440" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-3" parent="4kizEYEcBV5_phssOWoL-2" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-4" parent="4kizEYEcBV5_phssOWoL-3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#006EAF;overflow=hidden;fillColor=#1ba1e2;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontColor=#ffffff;" value="&lt;span&gt;&lt;font style=&quot;color: rgb(255, 255, 255);&quot;&gt;TABLA PRODUCTOS&lt;/font&gt;&lt;/span&gt;" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry">
+            <mxRectangle height="21" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-5" parent="4kizEYEcBV5_phssOWoL-2" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="159" width="150" y="21" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-6" parent="4kizEYEcBV5_phssOWoL-5" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;IdProductos&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Codigo_barras&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Nombre&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Descripcion&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Precio_compra&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Precio_venta&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Stock_minimo&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Categoria_id&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Proveedor_id&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Fecha_registro&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="159" width="150" as="geometry">
+            <mxRectangle height="159" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-7" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="70" width="150" x="220" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-8" parent="4kizEYEcBV5_phssOWoL-7" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-9" parent="4kizEYEcBV5_phssOWoL-8" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#006EAF;overflow=hidden;fillColor=#1ba1e2;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontColor=#ffffff;" value="TABLA CATEGORIAS" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry">
+            <mxRectangle height="21" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-10" parent="4kizEYEcBV5_phssOWoL-7" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="49" width="150" y="21" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-11" parent="4kizEYEcBV5_phssOWoL-10" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;IdCategoria&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Nombre&lt;/div&gt;" vertex="1">
+          <mxGeometry height="49" width="150" as="geometry">
+            <mxRectangle height="49" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-12" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="110" width="150" x="180" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-13" parent="4kizEYEcBV5_phssOWoL-12" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-14" parent="4kizEYEcBV5_phssOWoL-13" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#006EAF;overflow=hidden;fillColor=#1ba1e2;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontColor=#ffffff;" value="TABLA PROVEEDORES" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry">
+            <mxRectangle height="21" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-15" parent="4kizEYEcBV5_phssOWoL-12" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="89" width="150" y="21" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-16" parent="4kizEYEcBV5_phssOWoL-15" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;IdProveedores&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Nombre_empresa&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Contacto_nombre&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Telefono_empresa&lt;/div&gt;" vertex="1">
+          <mxGeometry height="89" width="150" as="geometry">
+            <mxRectangle height="89" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-17" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="130" width="150" x="230" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-18" parent="4kizEYEcBV5_phssOWoL-17" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-19" parent="4kizEYEcBV5_phssOWoL-18" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#006EAF;overflow=hidden;fillColor=#1ba1e2;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontColor=#ffffff;" value="TABLA VENTAS" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry">
+            <mxRectangle height="21" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-20" parent="4kizEYEcBV5_phssOWoL-17" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="109" width="150" y="21" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-21" parent="4kizEYEcBV5_phssOWoL-20" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;div&gt;IdVentas&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Fecha_venta&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Cliente_nombre&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Total&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Metodo_pago&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Usuario_id INT&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="109" width="150" as="geometry">
+            <mxRectangle height="109" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-22" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="150" width="150" x="450" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-23" parent="4kizEYEcBV5_phssOWoL-22" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="20" width="150" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-24" parent="4kizEYEcBV5_phssOWoL-23" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#006EAF;overflow=hidden;fillColor=#1ba1e2;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontColor=#ffffff;" value="TABLA DETALLE_VENTAS" vertex="1">
+          <mxGeometry height="20" width="150" as="geometry">
+            <mxRectangle height="20" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-25" parent="4kizEYEcBV5_phssOWoL-22" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="130" width="150" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-26" parent="4kizEYEcBV5_phssOWoL-25" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;IdDetalle_venta&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Venta_id&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Producto_id&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Cantidad&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Precio_unitario&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Subtotal&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="150" as="geometry">
+            <mxRectangle height="130" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-27" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="100" width="170" x="720" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-28" parent="4kizEYEcBV5_phssOWoL-27" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="21" width="170" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-29" parent="4kizEYEcBV5_phssOWoL-28" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#006EAF;overflow=hidden;fillColor=#1ba1e2;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontColor=#ffffff;" value="TABLA&amp;nbsp; ALMACEN / STOCK" vertex="1">
+          <mxGeometry height="21" width="170" as="geometry">
+            <mxRectangle height="21" width="170" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-30" parent="4kizEYEcBV5_phssOWoL-27" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="79" width="170" y="21" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-31" parent="4kizEYEcBV5_phssOWoL-30" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;IdAlmacen&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Producto_id&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Cantidad_actual&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Ultima_actualizacion&lt;/div&gt;" vertex="1">
+          <mxGeometry height="79" width="170" as="geometry">
+            <mxRectangle height="79" width="170" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-32" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="160" width="210" x="700" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-33" parent="4kizEYEcBV5_phssOWoL-32" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="40" width="210" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-34" parent="4kizEYEcBV5_phssOWoL-33" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#006EAF;overflow=hidden;fillColor=#1ba1e2;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontColor=#ffffff;" value="TABLA DE MOVIMIENTOS_INVENTARIO" vertex="1">
+          <mxGeometry height="40" width="210" as="geometry">
+            <mxRectangle height="40" width="210" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-35" parent="4kizEYEcBV5_phssOWoL-32" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="210" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-36" parent="4kizEYEcBV5_phssOWoL-35" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;IdMovimiento&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Producto_id&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Tipo_movimiento&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Cantidad&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Motivo&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Usuario_id&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Fecha&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="210" as="geometry">
+            <mxRectangle height="120" width="210" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-39" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-15" style="endArrow=none;html=1;rounded=0;exitX=0.4;exitY=1.011;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.008;entryY=0.806;entryDx=0;entryDy=0;entryPerimeter=0;" target="4kizEYEcBV5_phssOWoL-5" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="420" />
+              <mxPoint x="360" y="420" />
+              <mxPoint x="360" y="239" />
+            </Array>
+            <mxPoint x="360" y="250" as="sourcePoint" />
+            <mxPoint x="520" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-40" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-10" style="endArrow=none;html=1;rounded=0;exitX=0.407;exitY=1.02;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.566;entryDx=0;entryDy=0;entryPerimeter=0;" target="4kizEYEcBV5_phssOWoL-5" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="280" y="200" />
+            </Array>
+            <mxPoint x="310" y="150" as="sourcePoint" />
+            <mxPoint x="520" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-43" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-18" style="endArrow=none;html=1;rounded=0;exitX=0.267;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.273;entryY=1.013;entryDx=0;entryDy=0;entryPerimeter=0;" target="4kizEYEcBV5_phssOWoL-5" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="270" y="450" />
+              <mxPoint x="481" y="450" />
+            </Array>
+            <mxPoint x="410" y="350" as="sourcePoint" />
+            <mxPoint x="480" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-44" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-20" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="4kizEYEcBV5_phssOWoL-25" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="410" y="350" as="sourcePoint" />
+            <mxPoint x="570" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-45" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-5" style="endArrow=none;html=1;rounded=0;exitX=0.813;exitY=1.013;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.013;entryY=0.077;entryDx=0;entryDy=0;entryPerimeter=0;" target="4kizEYEcBV5_phssOWoL-25" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="562" y="440" />
+              <mxPoint x="640" y="440" />
+              <mxPoint x="640" y="520" />
+            </Array>
+            <mxPoint x="410" y="350" as="sourcePoint" />
+            <mxPoint x="500" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-47" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="150" width="150" x="30" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-48" parent="4kizEYEcBV5_phssOWoL-47" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-49" parent="4kizEYEcBV5_phssOWoL-48" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=#006EAF;overflow=hidden;fillColor=#1ba1e2;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontColor=#ffffff;" value="TABLA GASTOS" vertex="1">
+          <mxGeometry height="21" width="150" as="geometry">
+            <mxRectangle height="21" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-50" parent="4kizEYEcBV5_phssOWoL-47" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="129" width="150" y="21" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-51" parent="4kizEYEcBV5_phssOWoL-50" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;IdGastos&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Descripcion&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Monto&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Categoria_gasto&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Fecha_gasto&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Usuario_id&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Proveedor_id&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Comprobante_url&lt;/div&gt;" vertex="1">
+          <mxGeometry height="129" width="150" as="geometry">
+            <mxRectangle height="129" width="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-58" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-5" style="endArrow=none;html=1;rounded=0;exitX=1.012;exitY=0.806;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.007;entryY=0.41;entryDx=0;entryDy=0;entryPerimeter=0;" target="4kizEYEcBV5_phssOWoL-35" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="240" />
+              <mxPoint x="640" y="400" />
+            </Array>
+            <mxPoint x="620" y="220" as="sourcePoint" />
+            <mxPoint x="640" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-59" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-5" style="endArrow=none;html=1;rounded=0;entryX=-0.004;entryY=0.598;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.999;exitY=0.303;exitDx=0;exitDy=0;exitPerimeter=0;" target="4kizEYEcBV5_phssOWoL-30" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="100" as="sourcePoint" />
+            <mxPoint x="1010" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-60" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-50" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.19;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="4kizEYEcBV5_phssOWoL-10" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="480" y="320" as="sourcePoint" />
+            <mxPoint x="530" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-61" edge="1" parent="1" source="4kizEYEcBV5_phssOWoL-50" style="endArrow=none;html=1;rounded=0;exitX=0.327;exitY=1.011;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.014;entryY=0.367;entryDx=0;entryDy=0;entryPerimeter=0;" target="4kizEYEcBV5_phssOWoL-15" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="80" y="324" />
+            </Array>
+            <mxPoint x="480" y="320" as="sourcePoint" />
+            <mxPoint x="150" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-63" parent="1" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Diagrama Entidad Relacional&lt;/h1&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="190" width="260" x="-80" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-71" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Entidades Fuertes&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Productos&lt;/span&gt;&lt;/div&gt;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Proveedores&lt;/span&gt;&lt;/div&gt;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Categoria&lt;/span&gt;&lt;/div&gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="130" x="-60" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-72" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Entidades Debil&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); text-align: left;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Detalle_ventas&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Movimientos_inventario&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;Almacen / Stock&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="150" x="70" y="405" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-73" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="-170" y="-10" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-74" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="990" y="-10" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-75" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="990" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="4kizEYEcBV5_phssOWoL-76" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="-170" y="670" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
