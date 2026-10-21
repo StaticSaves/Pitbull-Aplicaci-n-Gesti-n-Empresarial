@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#102a43" />
+    <title>PITBULL Manager — Panel principal</title>
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+    <link rel="stylesheet" href="css/estilos.css" />
+  </head>
+  <body class="dashboard-body">
+    <div class="dashboard-shell">
+      <aside class="dashboard-sidebar" id="dashboard-sidebar" aria-label="Menú lateral">
+        <a class="sidebar-brand" href="index.html" aria-label="PITBULL Manager, inicio">
+          <img src="assets/logo.png" alt="" class="sidebar-logo" />
+          <span class="sidebar-brand-copy">
+            <strong>PITBULL</strong>
+            <small>GESTIÓN EMPRESARIAL</small>
+          </span>
+        </a>
+
+        <div class="sidebar-section-label">GENERAL</div>
+        <nav class="sidebar-nav" aria-label="Navegación principal">
+          <a href="index.html" class="sidebar-link active" aria-current="page" title="Panel principal">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>
+            <span class="sidebar-link-label">Panel principal</span>
+          </a>
+          <a href="productos.html" class="sidebar-link" data-permission="productos.ver" title="Productos">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg>
+            <span class="sidebar-link-label">Productos</span>
+          </a>
+          <a href="ventas.html" class="sidebar-link" data-permission="ventas.ver" title="Ventas">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5m0 14h17"/><path d="m7 15 4-4 3 2 6-7"/><path d="M16 6h4v4"/></svg>
+            <span class="sidebar-link-label">Ventas</span>
+          </a>
+
+          <div class="sidebar-section-label sidebar-section-spaced">OPERACIONES</div>
+          <a href="entradas.html" class="sidebar-link" data-permission="stock.entrada" title="Entradas">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>
+            <span class="sidebar-link-label">Entradas</span>
+          </a>
+          <a href="caja.html" class="sidebar-link" data-permission="caja.ver" title="Caja">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M16 14h5M3 10h18M7 5V3h10v2"/><circle cx="16" cy="15" r="1"/></svg>
+            <span class="sidebar-link-label">Caja</span>
+          </a>
+
+          <div class="sidebar-section-label sidebar-section-spaced">ADMINISTRACIÓN</div>
+          <a href="usuarios.html" class="sidebar-link" data-permission="usuarios.ver" title="Usuarios">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20v-1.5A4.5 4.5 0 0 1 7.5 14h3a4.5 4.5 0 0 1 4.5 4.5V20"/><path d="M16 5.2a3.5 3.5 0 0 1 0 6.6M18 14.5a4.5 4.5 0 0 1 3 4.3V20"/></svg>
+            <span class="sidebar-link-label">Usuarios</span>
+          </a>
+          <a href="configuracion.html" class="sidebar-link" data-permission="config.editar" title="Configuración">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.6-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.6 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2Z"/></svg>
+            <span class="sidebar-link-label">Configuración</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <button class="sidebar-collapse" id="sidebar-collapse" type="button" aria-label="Contraer menú" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 18-6-6 6-6"/><path d="M20 4v16"/></svg>
+            <span class="sidebar-link-label">Contraer menú</span>
+          </button>
+          <div class="sidebar-user">
+            <span class="sidebar-avatar" id="user-avatar">P</span>
+            <span class="sidebar-user-copy">
+              <strong id="user-nombre">Cargando usuario...</strong>
+              <small id="user-rol">Verificando acceso</small>
+            </span>
+            <button id="btn-logout" class="sidebar-logout" type="button" aria-label="Cerrar sesión" title="Cerrar sesión">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Cerrar menú" tabindex="-1" hidden></button>
+
+      <div class="dashboard-page">
+        <header class="topbar dashboard-topbar">
+          <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Abrir menú" aria-controls="dashboard-sidebar" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <div class="topbar-title">
+            <span>Panel principal</span>
+            <small>Resumen de operaciones</small>
+          </div>
+          <div class="topbar-info dashboard-account">
+            <span class="user-name" id="topbar-user-nombre">PITBULL Manager</span>
+            <span class="topbar-avatar" id="topbar-avatar">P</span>
+          </div>
+        </header>
+
+        <main class="dashboard-main">
+          <section class="dashboard-heading">
+            <div>
+              <p class="dashboard-eyebrow">RESUMEN DEL NEGOCIO</p>
+              <h1 id="welcome-title">Panel principal</h1>
+              <p class="dashboard-date" id="dashboard-date"></p>
+            </div>
+            <button class="btn btn-primary dashboard-refresh" id="btn-refresh" type="button">
+              Actualizar datos
+            </button>
+          </section>
+
+          <div id="dashboard-message" class="dashboard-message" role="status" hidden></div>
+
+          <section class="dashboard-metrics" aria-label="Indicadores principales">
+            <article class="metric-card metric-blue" data-metric="today-sales">
+              <div class="metric-icon" aria-hidden="true">$</div>
+              <div class="metric-copy">
+                <span>Ventas de hoy</span>
+                <strong id="metric-today-total">—</strong>
+                <small id="metric-today-count">Cargando ventas...</small>
+              </div>
+            </article>
+            <article class="metric-card metric-violet" data-metric="month-sales">
+              <div class="metric-icon" aria-hidden="true">↗</div>
+              <div class="metric-copy">
+                <span>Ventas del mes</span>
+                <strong id="metric-month-total">—</strong>
+                <small id="metric-month-count">Resumen mensual</small>
+              </div>
+            </article>
+            <article class="metric-card metric-amber" data-metric="low-stock">
+              <div class="metric-icon" aria-hidden="true">!</div>
+              <div class="metric-copy">
+                <span>Productos por reponer</span>
+                <strong id="metric-low-stock">—</strong>
+                <small id="metric-products-count">Inventario activo</small>
+              </div>
+            </article>
+            <article class="metric-card metric-green" data-metric="cash">
+              <div class="metric-icon" aria-hidden="true">▣</div>
+              <div class="metric-copy">
+                <span>Mi caja</span>
+                <strong id="metric-cash">—</strong>
+                <small>Estado de tu turno</small>
+              </div>
+            </article>
+          </section>
+
+          <section class="dashboard-content-grid">
+            <article class="dashboard-panel sales-panel" data-section="sales">
+              <div class="panel-heading">
+                <div>
+                  <p class="dashboard-eyebrow">ACTIVIDAD</p>
+                  <h2>Ventas de los últimos 7 días</h2>
+                </div>
+                <a href="ventas.html" class="panel-link" data-permission="ventas.ver">Ver ventas <span aria-hidden="true">→</span></a>
+              </div>
+              <div class="sales-chart" id="sales-chart" role="img" aria-label="Gráfico de ventas de los últimos siete días">
+                <p class="dashboard-loading">Cargando actividad...</p>
+              </div>
+            </article>
+
+            <article class="dashboard-panel inventory-panel" data-section="inventory">
+              <div class="panel-heading">
+                <div>
+                  <p class="dashboard-eyebrow">INVENTARIO</p>
+                  <h2>Requieren atención</h2>
+                </div>
+                <a href="productos.html" class="panel-link" data-permission="productos.ver">Ver productos <span aria-hidden="true">→</span></a>
+              </div>
+              <div id="low-stock-list" class="low-stock-list">
+                <p class="dashboard-loading">Cargando inventario...</p>
+              </div>
+            </article>
+          </section>
+
+          <section class="dashboard-panel recent-panel" data-section="recent-sales">
+            <div class="panel-heading">
+              <div>
+                <p class="dashboard-eyebrow">MOVIMIENTOS</p>
+                <h2>Ventas recientes</h2>
+              </div>
+              <a href="ventas.html" class="panel-link" data-permission="ventas.ver">Ir al módulo de ventas <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="table-scroll">
+              <table class="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Factura</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Método de pago</th>
+                    <th>Estado</th>
+                    <th class="align-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-sales-body">
+                  <tr><td colspan="6" class="dashboard-loading">Cargando ventas...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <footer class="dashboard-footer">
+            <span>PITBULL Manager</span>
+            <span id="dashboard-updated"></span>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <script src="js/sesion.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

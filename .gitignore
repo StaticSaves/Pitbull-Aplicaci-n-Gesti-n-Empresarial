@@ -15,12 +15,10 @@ _backup_old/
 *.log
 .env
 .env.*
-01_SERVIDOR/api/config/database.local.php
-01_SERVIDOR/db/backups/*.sql
-03_INSTALADOR/build/
+!.env.example
+app/config/database.local.php
+database/backups/*.sql
 dist/
-05_TESTING/login-test.json
-02_CLIENTE/src/test-login.html
 
 # User-specific files
 *.rsuser
