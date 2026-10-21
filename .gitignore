@@ -3,6 +3,25 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Pitbull PHP/Electron application
+node_modules/
+vendor/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+_backup_old/
+*.bak
+*.log
+.env
+.env.*
+01_SERVIDOR/api/config/database.local.php
+01_SERVIDOR/db/backups/*.sql
+03_INSTALADOR/build/
+dist/
+05_TESTING/login-test.json
+02_CLIENTE/src/test-login.html
+
 # User-specific files
 *.rsuser
 *.suo

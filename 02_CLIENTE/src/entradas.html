@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PITBULL Manager — Entrada de Mercancía</title>
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+    <link rel="stylesheet" href="css/estilos.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img src="assets/logo.png" alt="PITBULL" class="brand-logo" />
+        <div class="brand-text">
+          <h1>PITBULL</h1>
+          <span>manager v1.0</span>
+        </div>
+      </div>
+      <nav class="topnav">
+        <a href="index.html" class="topnav-link"> Productos</a>
+        <a href="ventas.html" class="topnav-link"> Ventas</a>
+        <a href="entradas.html" class="topnav-link"> Entradas</a>
+        <a href="caja.html" class="topnav-link"> Caja</a>
+        <a href="usuarios.html" class="topnav-link" id="nav-usuarios">
+          Usuarios</a
+        >
+        <a href="configuracion.html" class="topnav-link" id="nav-config">
+          Configuración</a
+        >
+      </nav>
+      <div class="topbar-info">
+        <div class="user-menu">
+          <span id="user-nombre" class="user-name">—</span>
+          <button
+            id="btn-logout"
+            class="btn btn-sm btn-ghost"
+            style="color: #fff; border-color: rgba(255, 255, 255, 0.3)"
+          >
+            Salir
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- FORMULARIO DE ENTRADA -->
+      <section class="card" id="card-form-entrada">
+        <h2>Nueva Entrada de Mercancía</h2>
+        <p class="hint">
+          Registra una compra al proveedor. Se actualizará el stock de cada
+          producto.
+        </p>
+
+        <form id="form-entrada">
+          <div class="grid-3">
+            <label
+              >Proveedor
+              <select id="ent-proveedor">
+                <option value="">— Sin proveedor específico —</option>
+              </select>
+            </label>
+            <label
+              >Almacén destino *
+              <select id="ent-almacen" required>
+                <option value="">— Seleccionar —</option>
+              </select>
+            </label>
+            <label
+              >Tipo
+              <select id="ent-tipo">
+                <option value="compra">Compra</option>
+                <option value="devolucion">Devolución</option>
+                <option value="ajuste">Ajuste</option>
+              </select>
+            </label>
+          </div>
+
+          <label
+            >Observaciones
+            <textarea
+              id="ent-observaciones"
+              rows="2"
+              maxlength="500"
+            ></textarea>
+          </label>
+          <!-- LÍNEAS DE PRODUCTOS -->
+          <div class="lineas-header">
+            <h3>Productos a ingresar</h3>
+            <button
+              type="button"
+              id="btn-agregar-linea"
+              class="btn btn-ghost btn-sm"
+            >
+              Agregar línea
+            </button>
+          </div>
+
+          <div id="lineas-container">
+            <!-- Se llenan dinámicamente -->
+          </div>
+
+          <!-- TOTALES -->
+          <div class="totales-panel">
+            <div class="total-row">
+              <span>Subtotal productos:</span>
+              <strong id="total-subtotal">Bs. 0.00</strong>
+            </div>
+            <div class="total-row">
+              <span>Gastos adicionales (flete, empaque):</span>
+              <strong id="total-gastos">Bs. 0.00</strong>
+            </div>
+            <div class="total-row total-final">
+              <span>TOTAL ENTRADA:</span>
+              <strong id="total-general">Bs. 0.00</strong>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="btn-registrar">
+              Registrar Entrada
+            </button>
+            <button type="reset" class="btn btn-ghost" id="btn-reset">
+              Limpiar
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- HISTORIAL DE ENTRADAS -->
+      <section class="card">
+        <div class="card-header">
+          <h2>Últimas Entradas</h2>
+        </div>
+        <table id="tabla-entradas">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Número</th>
+              <th>Proveedor</th>
+              <th>Almacén</th>
+              <th>Líneas</th>
+              <th>Total</th>
+              <th>Fecha</th>
+              <th>Usuario</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="9" class="empty">Cargando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="js/sesion.js"></script>
+    <script src="js/entradas.js"></script>
+  </body>
+</html>

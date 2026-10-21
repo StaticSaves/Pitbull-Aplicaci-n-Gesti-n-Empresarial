@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PITBULL Manager v1.0 — Iniciar sesión</title>
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+    <link rel="stylesheet" href="css/estilos.css" />
+  </head>
+  <body class="login-body">
+    <div class="login-wrapper">
+      <div class="login-brand">
+        <img src="assets/logo.png" alt="PITBULL" class="login-logo" />
+        <h1>PITBULL</h1>
+        <span>manager v1.0</span>
+      </div>
+
+      <div class="login-card">
+        <h2>Iniciar sesión</h2>
+        <p class="login-sub">Ferreconstrucciones La Excelencia C.A.</p>
+
+        <form id="form-login">
+          <label
+            >Email
+            <input
+              type="email"
+              id="login-email"
+              required
+              autocomplete="username"
+              autofocus
+              placeholder="correo@empresa.com"
+            />
+          </label>
+
+          <label
+            >Contraseña
+            <input
+              type="password"
+              id="login-password"
+              required
+              autocomplete="current-password"
+              placeholder="••••••••"
+            />
+          </label>
+
+          <div id="login-error" class="login-error" hidden></div>
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-block"
+            id="btn-login"
+          >
+            Entrar
+          </button>
+        </form>
+
+      </div>
+
+      <footer class="login-footer">© 2026 UNERMB</footer>
+    </div>
+
+    <script src="js/sesion.js"></script>
+    <script src="js/login.js"></script>
+  </body>
+</html>
