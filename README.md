@@ -21,7 +21,7 @@ Las carpetas `app/` y `database/`, así como los archivos `.env`, están protegi
 5. Copia `.env.example` como `.env` y completa los datos de tu servidor MySQL.
 6. Abre `http://localhost:8012/Pitbull-dev/` si Apache está configurado en el puerto 8012. La raíz redirige al login y, después de autenticar, `public/index.html` muestra el panel principal.
 
-La configuración local inicial utiliza `127.0.0.1:3306`, base `pitbull_db`, usuario `root` y contraseña vacía, que coincide con la configuración habitual de XAMPP. Cambia `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` y `DB_PASS` en `.env` para usar otros datos. No publiques ese archivo ni guardes credenciales reales en `.env.example`.
+La configuración local inicial utiliza `127.0.0.1:3306`, base `pitbull_db`, usuario `root` y contraseña vacía, que coincide con la configuración habitual de XAMPP. Cambia `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` y `DB_PASS` en `.env` para usar otros datos.
 
 Se requiere una versión de PHP compatible con el código (PHP 8 o superior) y la extensión `pdo_mysql` habilitada.
 
