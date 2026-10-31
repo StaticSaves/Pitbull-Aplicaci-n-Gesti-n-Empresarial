@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comprobante de Venta — PITBULL Manager</title>
     <style>
-      :root {
-        --ticket-width: 72mm; /* 80mm → 72mm | 58mm → 48mm */
-      }
+      :root { --ticket-width: 72mm; --ticket-font-size: 10px; }
 
       * {
         box-sizing: border-box;
@@ -18,7 +16,7 @@
       body {
         background: #e5e5e5;
         font-family: "Courier New", "Consolas", monospace;
-        font-size: 12px;
+        font-size: var(--ticket-font-size);
         color: #000;
         padding: 20px;
         display: flex;
@@ -50,7 +48,7 @@
       }
 
       .comp-header h2 {
-        font-size: 12px;
+        font-size: 1.2em;
         margin: 3px 0;
         font-weight: bold;
         text-transform: uppercase;
@@ -58,13 +56,13 @@
       }
 
       .comp-header p {
-        font-size: 10px;
+        font-size: 0.85em;
         margin: 1px 0;
         line-height: 1.3;
       }
 
       .comp-info {
-        font-size: 10px;
+        font-size: var(--ticket-font-size);
         margin-bottom: 8px;
         line-height: 1.5;
       }
@@ -83,7 +81,7 @@
       table {
         width: 100%;
         table-layout: fixed;
-        font-size: 10px;
+        font-size: var(--ticket-font-size);
         border-collapse: collapse;
         margin: 6px 0;
       }
@@ -93,7 +91,7 @@
         border-top: 1px solid #333;
         border-bottom: 1px solid #333;
         padding: 3px 2px;
-        font-size: 10px;
+        font-size: var(--ticket-font-size);
         text-transform: uppercase;
       }
 
@@ -106,7 +104,7 @@
 
       table td {
         padding: 3px 2px;
-        font-size: 10px;
+        font-size: var(--ticket-font-size);
         vertical-align: top;
         word-wrap: break-word;
         overflow-wrap: break-word;
@@ -123,7 +121,7 @@
         border-top: 1px dashed #333;
         padding-top: 6px;
         margin-top: 6px;
-        font-size: 11px;
+        font-size: var(--ticket-font-size);
       }
 
       .comp-totales div {
@@ -134,7 +132,7 @@
 
       .comp-totales .total {
         font-weight: bold;
-        font-size: 13px;
+        font-size: 1.3em;
         border-top: 1px solid #333;
         padding-top: 4px;
         margin-top: 4px;
@@ -142,7 +140,7 @@
 
       .comp-footer {
         text-align: center;
-        font-size: 9px;
+        font-size: 0.9em;
         margin-top: 10px;
         padding-top: 6px;
         border-top: 1px dashed #333;
@@ -178,9 +176,8 @@
         background: #ddd;
       }
 
-      /* termica*/
       @page {
-        size: 80mm auto; /* si tu impresora es 58mm → size: 58mm auto; */
+        size: auto;
         margin: 0;
       }
 
@@ -193,11 +190,15 @@
         }
 
         .comprobante {
-          width: 100%;
+          width: var(--ticket-width);
           max-width: 100%;
           box-shadow: none;
           padding: 2mm;
           margin: 0;
+        }
+
+        body.papel-normal .comprobante {
+          padding: 0;
         }
 
         .no-print {
@@ -208,18 +209,14 @@
           height: 35px;
         }
 
-        .comp-header h2 {
-          font-size: 11px;
-        }
-
         table,
         .comp-totales,
         .comp-info {
-          font-size: 10px;
+          font-size: var(--ticket-font-size);
         }
 
         .comp-totales .total {
-          font-size: 12px;
+          font-size: 1.3em;
         }
       }
     </style>
@@ -232,11 +229,19 @@
     <div class="no-print">
       <button onclick="window.print()">Imprimir</button>
       <button onclick="window.close()">Cerrar</button>
+      <p class="hint" id="print-config-warning" role="status" hidden></p>
     </div>
 
     <script src="js/sesion.js"></script>
+    <script src="js/branding.js"></script>
     <script>
       const API_BASE = "api";
+
+      const FORMATO_HOJAS = {
+        a4: [210, 297],
+        carta: [215.9, 279.4],
+        oficio: [215.9, 355.6],
+      };
 
       function escapeHtml(str) {
         return String(str ?? "").replace(
@@ -250,6 +255,71 @@
               "'": "&#39;",
             })[s],
         );
+      }
+
+      async function aplicarParametrosImpresion() {
+        let data;
+        try {
+          const res = await fetch(`${API_BASE}/config_sistema.php?public=printing`);
+          data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || "No se pudieron cargar los parámetros de impresión");
+          }
+          if (!data || data.ok !== true || typeof data.printing !== "object") {
+            throw new Error("La respuesta de impresión no es válida");
+          }
+        } catch (error) {
+          const warning = document.getElementById("print-config-warning");
+          warning.textContent =
+            `No se pudieron cargar los ajustes de impresión (${error.message}). Se usarán los valores predeterminados.`;
+          warning.hidden = false;
+          console.error("Error cargando los parámetros de impresión:", error);
+          return;
+        }
+
+        const config = data.printing || {};
+        const tipo = ["termica", "fiscal", "hoja"].includes(config.impresora_tipo)
+          ? config.impresora_tipo
+          : "termica";
+        const margenConfig = Number(config.impresora_margen_mm ?? 0);
+        const margen = margenConfig >= 0 && margenConfig <= 25 ? margenConfig : 0;
+        const fuenteConfig = Number(config.impresora_fuente_px ?? 10);
+        const fuente = fuenteConfig >= 8 && fuenteConfig <= 18 ? fuenteConfig : 10;
+        document.documentElement.style.setProperty(
+          "--ticket-font-size",
+          `${fuente}px`,
+        );
+
+        let anchoPagina;
+        let altoPagina;
+        if (tipo === "hoja") {
+          [anchoPagina, altoPagina] =
+            FORMATO_HOJAS[config.impresora_papel] || FORMATO_HOJAS.a4;
+          if (config.impresora_orientacion === "horizontal") {
+            [anchoPagina, altoPagina] = [altoPagina, anchoPagina];
+          }
+          document.body.classList.add("papel-normal");
+          document.documentElement.style.setProperty(
+            "--ticket-width",
+            `${anchoPagina - margen * 2}mm`,
+          );
+        } else {
+          const ancho = Number(config.impresora_ancho_mm ?? 72);
+          const anchoValido = ancho >= 30 && ancho <= 300 ? ancho : 72;
+          anchoPagina = anchoValido;
+          altoPagina = "auto";
+          document.documentElement.style.setProperty(
+            "--ticket-width",
+            `${Math.max(10, anchoValido - margen * 2)}mm`,
+          );
+        }
+
+        const tamanoPagina = altoPagina === "auto"
+          ? "auto"
+          : `${anchoPagina}mm ${altoPagina}mm`;
+        const style = document.createElement("style");
+        style.textContent = `@page { size: ${tamanoPagina}; margin: ${margen}mm; }`;
+        document.head.append(style);
       }
 
       async function cargar() {
@@ -272,6 +342,7 @@
         }
 
         try {
+          await aplicarParametrosImpresion();
           const res = await fetch(`${API_BASE}/ventas.php?id=${id}`, {
             headers: {
               Authorization: "Bearer " + token,
@@ -309,9 +380,9 @@
                     <div class="comp-header">
                         <img src="assets/logo.png" alt="PITBULL">
                         <h2>Ferreconstrucciones La Excelencia C.A.</h2>
-                        <p>RIF: J-000000000</p>
-                        <p>148 Circunvalación 3, Maracaibo, Zulia</p>
-                        <p>Tel: 0414-0000000</p>
+                        <p data-brand-rif>RIF: J-000000000</p>
+                        <p data-brand-address>148 Circunvalación 3, Maracaibo, Zulia</p>
+                        <p data-brand-phone>Tel: 0414-0000000</p>
                     </div>
 
                     <div class="comp-info">

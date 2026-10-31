@@ -34,8 +34,7 @@
           <span id="user-nombre" class="user-name">—</span>
           <button
             id="btn-logout"
-            class="btn btn-sm btn-ghost"
-            style="color: #fff; border-color: rgba(255, 255, 255, 0.3)"
+            class="btn btn-sm btn-ghost btn-topbar"
           >
             Salir
           </button>
@@ -44,12 +43,23 @@
     </header>
 
     <main class="container">
+      <nav class="section-tabs" aria-label="Opciones de caja">
+        <button type="button" class="section-tab" data-caja-tab="estado" data-permission="caja.ver" aria-controls="panel-caja-estado">Estado</button>
+        <button type="button" class="section-tab" data-caja-tab="abrir" data-permission="caja.abrir" aria-controls="panel-caja-abrir">Abrir caja</button>
+        <button type="button" class="section-tab" data-caja-tab="cerrar" data-permission="caja.cerrar" aria-controls="panel-caja-cerrar">Cerrar caja</button>
+        <button type="button" class="section-tab" data-caja-tab="movimientos" data-permission="caja.movimiento_manual" aria-controls="panel-caja-movimientos">Movimientos manuales</button>
+        <button type="button" class="section-tab" data-caja-tab="historial" data-permission="caja.ver" aria-controls="panel-caja-historial">Historial</button>
+      </nav>
+
+      <div id="panel-caja-estado" data-caja-panel="estado">
       <!-- ESTADO DE CAJA -->
       <section class="card" id="card-estado">
         <h2>Estado de Caja</h2>
         <div id="caja-info" class="empty">Verificando...</div>
       </section>
+      </div>
 
+      <div id="panel-caja-abrir" data-caja-panel="abrir" hidden>
       <!-- ABRIR CAJA -->
       <section class="card" id="card-abrir" hidden>
         <h2>Abrir Caja</h2>
@@ -79,7 +89,9 @@
           </div>
         </form>
       </section>
+      </div>
 
+      <div id="panel-caja-cerrar" data-caja-panel="cerrar" hidden>
       <!-- CERRAR CAJA -->
       <section class="card" id="card-cerrar" hidden>
         <h2>Cerrar Caja</h2>
@@ -109,7 +121,9 @@
           </div>
         </form>
       </section>
+      </div>
 
+      <div id="panel-caja-movimientos" data-caja-panel="movimientos" hidden>
       <!-- MOVIMIENTO MANUAL -->
       <section class="card" id="card-movimiento" hidden>
         <h2>Ingreso / Egreso Manual</h2>
@@ -148,7 +162,9 @@
           </div>
         </form>
       </section>
+      </div>
 
+      <div id="panel-caja-historial" data-caja-panel="historial" hidden>
       <!-- HISTORIAL -->
       <section class="card">
         <h2>Historial de Cajas</h2>
@@ -172,9 +188,11 @@
           </tbody>
         </table>
       </section>
+      </div>
     </main>
 
     <script src="js/sesion.js"></script>
+    <script src="js/branding.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/caja.js"></script>
   </body>

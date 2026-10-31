@@ -3,22 +3,22 @@ const PITBULL_MENU_ITEMS = [
     section: "GENERAL",
     links: [
       { href: "index.html", label: "Panel principal", title: "Panel principal", icon: "dashboard" },
-      { href: "productos.html", label: "Productos", permission: "productos.ver", icon: "products" },
+      { href: "productos.html", label: "Productos", permission: "productos.ver|productos.crear|productos.editar|stock.merma|stock.entrada", icon: "products" },
       { href: "ventas.html", label: "Ventas", permission: "ventas.ver", icon: "sales" },
     ],
   },
   {
     section: "OPERACIONES",
     links: [
-      { href: "entradas.html", label: "Entradas", permission: "entradas.crear", icon: "entries" },
-      { href: "caja.html", label: "Caja", permission: "caja.ver|caja.abrir|caja.cerrar", icon: "cash" },
+      { href: "entradas.html", label: "Entradas", permission: "entradas.ver", icon: "entries" },
+      { href: "caja.html", label: "Caja", permission: "caja.ver", icon: "cash" },
     ],
   },
   {
     section: "ADMINISTRACIÓN",
     links: [
-      { href: "usuarios.html", label: "Usuarios", permission: "usuarios.ver", icon: "users" },
-      { href: "configuracion.html", label: "Configuración", permission: "config.editar", icon: "settings" },
+      { href: "usuarios.html", label: "Usuarios", permission: "usuarios.ver|usuarios.crear|usuarios.editar|roles.gestionar", icon: "users" },
+      { href: "configuracion.html", label: "Configuración", permission: "config.ver|config.editar", icon: "settings" },
     ],
   },
 ];

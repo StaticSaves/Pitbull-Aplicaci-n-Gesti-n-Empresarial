@@ -25,7 +25,7 @@
         <a href="usuarios.html" class="topnav-link" id="nav-usuarios">
           Usuarios</a
         >
-        <a href="configuracion.html" class="topnav-link active" id="nav-config">
+        <a href="configuracion.html" class="topnav-link active" id="nav-config" data-permission="config.ver|config.editar">
           Configuración</a
         >
       </nav>
@@ -34,8 +34,7 @@
           <span id="user-nombre" class="user-name">—</span>
           <button
             id="btn-logout"
-            class="btn btn-sm btn-ghost"
-            style="color: #fff; border-color: rgba(255, 255, 255, 0.3)"
+            class="btn btn-sm btn-ghost btn-topbar"
           >
             Salir
           </button>
@@ -44,7 +43,16 @@
     </header>
 
     <main class="container">
-      <section class="card">
+      <nav class="section-tabs" id="config-tabs" aria-label="Opciones de configuración">
+        <button type="button" class="section-tab" data-config-tab="tasas" data-permission="config.editar|config.tasas" aria-controls="config-tasas">Tasas</button>
+        <button type="button" class="section-tab" data-config-tab="fiscal" data-permission="config.editar|config.fiscal" aria-controls="config-fiscal">Parámetros fiscales</button>
+        <button type="button" class="section-tab" data-config-tab="empresa" data-permission="config.editar|config.empresa" aria-controls="config-empresa">Datos de empresa</button>
+        <button type="button" class="section-tab" data-config-tab="personalizacion" data-permission="config.editar|config.personalizacion" aria-controls="config-personalizacion">Personalización</button>
+        <button type="button" class="section-tab" data-config-tab="impresion" data-permission="config.editar|config.impresion" aria-controls="config-impresion">Impresoras</button>
+      </nav>
+      <p class="hint" id="config-no-options" role="status" hidden>No tienes opciones de configuración habilitadas para tu rol.</p>
+
+      <section class="card config-panel" id="config-tasas" data-config-panel="tasas" data-permission="config.editar|config.tasas">
         <h2>Tasa de Cambio (Bs. / USD)</h2>
         <p class="hint">
           La tasa activa se usará para mostrar precios en dólares y al registrar
@@ -77,7 +85,7 @@
         </form>
       </section>
 
-      <section class="card">
+      <section class="card config-panel" id="config-fiscal" data-config-panel="fiscal" data-permission="config.editar|config.fiscal" hidden>
         <h2>Parámetros Fiscales</h2>
         <form id="form-fiscal">
           <div class="grid">
@@ -93,7 +101,7 @@
         </form>
       </section>
 
-      <section class="card">
+      <section class="card config-panel" id="config-empresa" data-config-panel="empresa" data-permission="config.editar|config.empresa" hidden>
         <h2>Datos de la Empresa</h2>
         <form id="form-empresa">
           <div class="grid">
@@ -121,6 +129,86 @@
         </form>
       </section>
 
+      <section class="card config-panel" id="config-personalizacion" data-config-panel="personalizacion" data-permission="config.editar|config.personalizacion" hidden>
+        <h2>Personalización del entorno</h2>
+        <p class="hint">
+          Define la identidad visual de la empresa. Se mostrará en el sistema,
+          el inicio de sesión y los comprobantes.
+        </p>
+        <div class="grid">
+          <label>
+            Color principal
+            <input type="color" id="cfg-color-principal" value="#1e3a8a" />
+          </label>
+          <label>
+            Color de acento
+            <input type="color" id="cfg-color-acento" value="#3b82f6" />
+          </label>
+          <label>
+            Logo de la empresa (PNG, JPG o WebP; máximo 300 KB)
+            <input type="file" id="cfg-logo" accept="image/png,image/jpeg,image/webp" />
+          </label>
+        </div>
+        <div class="brand-preview">
+          <img src="assets/logo.png" alt="Vista previa del logo" id="logo-preview" />
+          <button type="button" class="btn btn-ghost" id="btn-quitar-logo">
+            Usar logo predeterminado
+          </button>
+        </div>
+        <p class="hint" id="msg-logo" role="status" hidden></p>
+      </section>
+
+      <section class="card config-panel" id="config-impresion" data-config-panel="impresion" data-permission="config.editar|config.impresion" hidden>
+        <h2>Parámetros de impresión</h2>
+        <p class="hint">
+          Ajusta el ancho y la presentación del comprobante para impresoras térmicas,
+          fiscales o papel normal. La impresora y el tamaño de papel también deben
+          estar configurados en el sistema operativo.
+        </p>
+        <div class="grid">
+          <label>
+            Tipo de impresora
+            <select id="cfg-impresora-tipo">
+              <option value="termica">Térmica</option>
+              <option value="fiscal">Fiscal</option>
+              <option value="hoja">Hojas normales</option>
+            </select>
+          </label>
+          <label id="cfg-impresora-ancho-contenedor">
+            Ancho del rollo (mm)
+            <input type="number" id="cfg-impresora-ancho" min="30" max="300" step="1" />
+          </label>
+          <label id="cfg-impresora-papel-contenedor" hidden>
+            Tamaño de hoja
+            <select id="cfg-impresora-papel">
+              <option value="a4">A4</option>
+              <option value="carta">Carta</option>
+              <option value="oficio">Oficio</option>
+            </select>
+          </label>
+          <label id="cfg-impresora-orientacion-contenedor" hidden>
+            Orientación
+            <select id="cfg-impresora-orientacion">
+              <option value="vertical">Vertical</option>
+              <option value="horizontal">Horizontal</option>
+            </select>
+          </label>
+          <label>
+            Márgenes (mm)
+            <input type="number" id="cfg-impresora-margen" min="0" max="25" step="1" />
+          </label>
+          <label>
+            Tamaño de letra (px)
+            <input type="number" id="cfg-impresora-fuente" min="8" max="18" step="1" />
+          </label>
+        </div>
+        <p class="hint" id="cfg-impresora-fiscal-nota" hidden>
+          La integración con el controlador o protocolo de una impresora fiscal depende
+          del fabricante. Estos parámetros ajustan el comprobante visual y no sustituyen
+          la emisión de documentos fiscales autorizados.
+        </p>
+      </section>
+
       <div class="actions-sticky">
         <button id="btn-guardar-todo" class="btn btn-primary">
           Guardar toda la configuración
@@ -130,6 +218,7 @@
     </main>
 
     <script src="js/sesion.js"></script>
+    <script src="js/branding.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/configuracion.js"></script>
   </body>

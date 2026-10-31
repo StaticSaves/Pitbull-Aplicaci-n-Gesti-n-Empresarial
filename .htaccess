@@ -1,6 +1,14 @@
 Options -Indexes
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|css|js)$">
+        Header always set Cache-Control "no-cache, no-store, must-revalidate"
+        Header always set Pragma "no-cache"
+        Header always set Expires "0"
+    </FilesMatch>
+</IfModule>
+
 <FilesMatch "^\.env(?:\..*)?$">
     Require all denied
 </FilesMatch>

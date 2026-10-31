@@ -62,6 +62,23 @@ CREATE TABLE `caja` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `movimientos_caja`
+--
+
+CREATE TABLE `movimientos_caja` (
+  `id` bigint(20) NOT NULL,
+  `caja_id` int(11) NOT NULL,
+  `tipo` enum('apertura','cierre','ingreso_manual','venta','egreso_manual','retiro') NOT NULL,
+  `monto` decimal(12,2) NOT NULL,
+  `concepto` varchar(255) NOT NULL,
+  `referencia_id` bigint(20) DEFAULT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `categorias`
 --
 
@@ -103,6 +120,43 @@ CREATE TABLE `gastos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `configuracion`
+--
+
+CREATE TABLE `configuracion` (
+  `clave` varchar(80) NOT NULL,
+  `valor` longtext NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`clave`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Valores iniciales de la configuración
+--
+
+INSERT INTO `configuracion` (`clave`, `valor`, `descripcion`) VALUES
+('tasa_bcv', '0', 'Tasa BCV en Bs. por USD'),
+('tasa_paralelo', '0', 'Tasa paralela en Bs. por USD'),
+('tasa_usada', 'bcv', 'Tasa de cambio activa'),
+('iva_porcentaje', '16', 'Porcentaje de IVA'),
+('margen_ganancia_default', '15', 'Margen de ganancia por defecto'),
+('nombre_empresa', 'PITBULL', 'Nombre de la empresa'),
+('rif_empresa', '', 'RIF de la empresa'),
+('telefono_empresa', '', 'Teléfono de la empresa'),
+('direccion_empresa', '', 'Dirección de la empresa'),
+('color_principal', '#1e3a8a', 'Color principal de la interfaz'),
+('color_acento', '#3b82f6', 'Color de acento de la interfaz'),
+('logo_empresa', '', 'Logo de la empresa en formato data URL'),
+('impresora_tipo', 'termica', 'Tipo de impresora para comprobantes'),
+('impresora_ancho_mm', '72', 'Ancho de papel para impresora térmica o fiscal'),
+('impresora_papel', 'a4', 'Tamaño de hoja para impresión normal'),
+('impresora_orientacion', 'vertical', 'Orientación de impresión en hojas'),
+('impresora_margen_mm', '0', 'Margen de impresión en milímetros'),
+('impresora_fuente_px', '10', 'Tamaño de letra de los comprobantes en píxeles');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `mermas`
 --
 
@@ -134,6 +188,31 @@ CREATE TABLE `movimientos_stock` (
   `referencia_id` int(11) DEFAULT NULL,
   `usuario_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `movimientos_producto`
+--
+
+CREATE TABLE `movimientos_producto` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `producto_id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `tipo` enum('merma','devolucion','ajuste_stock','ajuste_precio') NOT NULL,
+  `cantidad` int(11) NOT NULL DEFAULT 0,
+  `stock_anterior` int(11) NOT NULL,
+  `stock_nuevo` int(11) NOT NULL,
+  `precio_anterior` decimal(12,2) DEFAULT NULL,
+  `precio_nuevo` decimal(12,2) NOT NULL,
+  `impacto` decimal(14,2) NOT NULL DEFAULT 0.00,
+  `motivo` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_movimientos_producto_fecha` (`created_at`),
+  KEY `idx_movimientos_producto_producto` (`producto_id`),
+  KEY `fk_movimientos_producto_usuario` (`usuario_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -217,7 +296,20 @@ INSERT INTO `permisos` (`id`, `clave`, `descripcion`, `modulo`, `created_at`) VA
 (24, 'usuarios.editar', 'Editar usuarios', 'configuracion', '2026-10-10 15:40:48'),
 (25, 'usuarios.eliminar', 'Eliminar usuarios', 'configuracion', '2026-10-10 15:40:48'),
 (26, 'auditoria.ver', 'Ver bitácora de auditoría', 'configuracion', '2026-10-10 15:40:48'),
-(27, 'config.editar', 'Editar parámetros del sistema (tasa, IVA)', 'configuracion', '2026-10-10 15:40:48');
+(27, 'config.editar', 'Editar parámetros del sistema (tasa, IVA)', 'configuracion', '2026-10-10 15:40:48'),
+(28, 'roles.gestionar', 'Gestionar permisos asignados a cada rol', 'configuracion', '2026-10-29 12:00:00'),
+(29, 'config.tasas', 'Editar tasas de cambio', 'configuracion', '2026-10-29 12:00:00'),
+(30, 'config.fiscal', 'Editar parámetros fiscales', 'configuracion', '2026-10-29 12:00:00'),
+(31, 'config.empresa', 'Editar datos de la empresa', 'configuracion', '2026-10-29 12:00:00'),
+(32, 'config.personalizacion', 'Editar la identidad visual de la empresa', 'configuracion', '2026-10-29 12:00:00'),
+(33, 'entradas.ver', 'Ver historial de entradas de mercancía', 'inventario', '2026-10-29 12:00:00'),
+(34, 'entradas.crear', 'Registrar entradas de mercancía', 'inventario', '2026-10-29 12:00:00'),
+(35, 'almacenes.ver', 'Ver almacenes', 'inventario', '2026-10-29 12:00:00'),
+(36, 'almacenes.gestionar', 'Gestionar almacenes', 'inventario', '2026-10-29 12:00:00'),
+(37, 'caja.movimiento_manual', 'Registrar ingresos y egresos manuales de caja', 'caja', '2026-10-29 12:00:00'),
+(38, 'config.ver', 'Acceder a la sección de configuración', 'configuracion', '2026-10-29 12:00:00'),
+(39, 'proveedores.gestionar', 'Registrar, editar y desactivar proveedores', 'inventario', '2026-10-29 12:00:00'),
+(40, 'config.impresion', 'Editar los parámetros de impresión', 'configuracion', '2026-10-30 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -361,7 +453,24 @@ INSERT INTO `rol_permiso` (`rol_id`, `permiso_id`) VALUES
 (3, 20),
 (4, 20),
 (4, 22),
-(4, 26);
+(4, 26),
+(1, 28),
+(1, 29),
+(1, 30),
+(1, 31),
+(1, 32),
+(1, 33),
+(1, 34),
+(1, 35),
+(1, 36),
+(1, 37),
+(1, 38),
+(1, 39),
+(1, 40),
+(2, 33),
+(2, 34),
+(2, 35),
+(2, 36);
 
 -- --------------------------------------------------------
 
@@ -419,12 +528,17 @@ CREATE TABLE `ventas` (
   `numero_factura` varchar(30) NOT NULL,
   `cliente_nombre` varchar(150) DEFAULT NULL,
   `cliente_cedula` varchar(20) DEFAULT NULL,
+  `cliente_telefono` varchar(30) DEFAULT NULL,
+  `cliente_direccion` text DEFAULT NULL,
   `subtotal` decimal(12,2) NOT NULL DEFAULT 0.00,
   `descuento` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `descuento_global` decimal(12,2) NOT NULL DEFAULT 0.00,
   `iva` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `iva_porcentaje` decimal(5,2) NOT NULL DEFAULT 16.00,
   `total` decimal(12,2) NOT NULL DEFAULT 0.00,
   `costo_total` decimal(12,2) NOT NULL DEFAULT 0.00,
   `utilidad` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `observaciones` text DEFAULT NULL,
   `metodo_pago` enum('efectivo','pago_movil','transferencia','punto_venta','credito') DEFAULT 'efectivo',
   `estado` enum('completada','anulada','pendiente') DEFAULT 'completada',
   `usuario_id` int(11) NOT NULL,
@@ -471,6 +585,16 @@ ALTER TABLE `caja`
   ADD KEY `usuario_id` (`usuario_id`),
   ADD KEY `idx_estado` (`estado`),
   ADD KEY `idx_fecha` (`abierta_en`);
+
+--
+-- Indices de la tabla `movimientos_caja`
+--
+ALTER TABLE `movimientos_caja`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_caja` (`caja_id`),
+  ADD KEY `idx_usuario` (`usuario_id`),
+  ADD KEY `idx_tipo` (`tipo`),
+  ADD KEY `idx_fecha` (`created_at`);
 
 --
 -- Indices de la tabla `categorias`
@@ -622,6 +746,12 @@ ALTER TABLE `caja`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `movimientos_caja`
+--
+ALTER TABLE `movimientos_caja`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
@@ -661,7 +791,7 @@ ALTER TABLE `pedido_detalle`
 -- AUTO_INCREMENT de la tabla `permisos`
 --
 ALTER TABLE `permisos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -794,6 +924,10 @@ ALTER TABLE `ventas`
 ALTER TABLE `venta_detalle`
   ADD CONSTRAINT `venta_detalle_ibfk_1` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `venta_detalle_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`);
+
+ALTER TABLE `movimientos_producto`
+  ADD CONSTRAINT `fk_movimientos_producto_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`),
+  ADD CONSTRAINT `fk_movimientos_producto_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

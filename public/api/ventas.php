@@ -88,6 +88,13 @@ try {
 ");
             $stmt->execute([$id]);
             $venta['lineas'] = $stmt->fetchAll();
+            if (!tienePermiso($permisos, 'ventas.ver_utilidad')) {
+                unset($venta['costo_total'], $venta['utilidad']);
+                foreach ($venta['lineas'] as &$linea) {
+                    unset($linea['costo_unitario']);
+                }
+                unset($linea);
+            }
 
             echo json_encode($venta, JSON_UNESCAPED_UNICODE);
         } else {
@@ -181,8 +188,8 @@ try {
             ");
             $stmtMovimiento = $pdo->prepare("
                 INSERT INTO movimientos_stock
-                    (producto_id, almacen_id, tipo, cantidad, stock_anterior, stock_nuevo, motivo, referencia_id, usuario_id)
-                VALUES (?, NULL, 'salida_venta', ?, ?, ?, ?, ?, ?)
+                    (producto_id, tipo, cantidad, stock_anterior, stock_nuevo, motivo, referencia_id, usuario_id)
+                VALUES (?, 'salida_venta', ?, ?, ?, ?, ?, ?)
             ");
 
             foreach ($lineas as $l) {

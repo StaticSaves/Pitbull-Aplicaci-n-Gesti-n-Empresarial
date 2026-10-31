@@ -70,7 +70,9 @@ $permisoRequerido = match ($method) {
     default  => null,
 };
 
-if ($permisoRequerido && !tienePermiso($permisos, $permisoRequerido)) {
+$puedeConsultarParaMovimientos = $method === 'GET' &&
+    (tienePermiso($permisos, 'stock.merma') || tienePermiso($permisos, 'stock.entrada'));
+if ($permisoRequerido && !tienePermiso($permisos, $permisoRequerido) && !$puedeConsultarParaMovimientos) {
     http_response_code(403);
     echo json_encode([
         'error' => "No tienes permiso para esta acción",
@@ -78,23 +80,6 @@ if ($permisoRequerido && !tienePermiso($permisos, $permisoRequerido)) {
     ]);
     exit;
 }
-
-header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-// Preflight de CORS
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit;
-}
-
-require_once __DIR__ . '/../../app/config/database.php';
-
-$pdo    = Database::getConnection();
-$method = $_SERVER['REQUEST_METHOD'];
-$id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
 // Leer body JSON para POST/PUT/DELETE
 $input = [];
@@ -124,6 +109,9 @@ try {
                     echo json_encode(['error' => 'Producto no encontrado']);
                     exit;
                 }
+                if (!tienePermiso($permisos, 'productos.ver_costos')) {
+                    unset($prod['costo'], $prod['margen_ganancia']);
+                }
                 echo json_encode($prod);
             } else {
                 $stmt = $pdo->query("
@@ -133,7 +121,14 @@ try {
                     WHERE p.activo = 1
                     ORDER BY p.id DESC
                 ");
-                echo json_encode($stmt->fetchAll());
+                $productos = $stmt->fetchAll();
+                if (!tienePermiso($permisos, 'productos.ver_costos')) {
+                    foreach ($productos as &$producto) {
+                        unset($producto['costo'], $producto['margen_ganancia']);
+                    }
+                    unset($producto);
+                }
+                echo json_encode($productos);
             }
             break;
 
@@ -172,7 +167,9 @@ try {
                 (float)($input['precio'] ?? 0),
                 isset($input['precio_mayorista']) && $input['precio_mayorista'] !== ''
                     ? (float)$input['precio_mayorista'] : null,
-                (float)($input['costo'] ?? 0),
+                tienePermiso($permisos, 'productos.ver_costos')
+                    ? (float)($input['costo'] ?? 0)
+                    : 0,
                 (int)($input['stock'] ?? 0),
                 (int)($input['stock_minimo'] ?? 0),
                 $input['unidad_medida'] ?? 'unidad',
@@ -192,7 +189,25 @@ try {
                 exit;
             }
 
-            $stmt = $pdo->prepare("
+            $pdo->beginTransaction();
+            $stmtActual = $pdo->prepare("
+                SELECT precio, stock
+                FROM productos
+                WHERE id = ? AND activo = 1
+                FOR UPDATE
+            ");
+            $stmtActual->execute([$id]);
+            $productoActual = $stmtActual->fetch();
+            if (!$productoActual) {
+                $pdo->rollBack();
+                http_response_code(404);
+                echo json_encode(['error' => 'Producto no encontrado']);
+                exit;
+            }
+
+            $puedeVerCostos = tienePermiso($permisos, 'productos.ver_costos');
+            $actualizarCosto = $puedeVerCostos ? "costo = ?," : "";
+            $sql = "
                 UPDATE productos SET
                     sku              = ?,
                     nombre           = ?,
@@ -201,13 +216,14 @@ try {
                     proveedor_id     = ?,
                     precio           = ?,
                     precio_mayorista = ?,
-                    costo            = ?,
+                    $actualizarCosto
                     stock            = ?,
                     stock_minimo     = ?,
                     unidad_medida    = ?
                 WHERE id = ?
-            ");
-            $stmt->execute([
+            ";
+            $stmt = $pdo->prepare($sql);
+            $parametros = [
                 trim($input['sku'] ?? ''),
                 trim($input['nombre'] ?? ''),
                 $input['descripcion'] ?? null,
@@ -216,12 +232,38 @@ try {
                 (float)($input['precio'] ?? 0),
                 isset($input['precio_mayorista']) && $input['precio_mayorista'] !== ''
                     ? (float)$input['precio_mayorista'] : null,
-                (float)($input['costo'] ?? 0),
+            ];
+            if ($puedeVerCostos) {
+                $parametros[] = (float)($input['costo'] ?? 0);
+            }
+            array_push(
+                $parametros,
                 (int)($input['stock'] ?? 0),
                 (int)($input['stock_minimo'] ?? 0),
                 $input['unidad_medida'] ?? 'unidad',
-                $id,
-            ]);
+                $id
+            );
+            $stmt->execute($parametros);
+            $precioNuevo = (float)($input['precio'] ?? 0);
+            $precioAnterior = (float)$productoActual['precio'];
+            if (round($precioNuevo - $precioAnterior, 2) !== 0.0) {
+                $pdo->prepare("
+                    INSERT INTO movimientos_producto
+                        (producto_id, usuario_id, tipo, cantidad, stock_anterior, stock_nuevo,
+                         precio_anterior, precio_nuevo, impacto, motivo)
+                    VALUES (?, ?, 'ajuste_precio', 0, ?, ?, ?, ?, ?, ?)
+                ")->execute([
+                    $id,
+                    $sesion['usuario_id'],
+                    (int)$productoActual['stock'],
+                    (int)$productoActual['stock'],
+                    $precioAnterior,
+                    $precioNuevo,
+                    round(($precioNuevo - $precioAnterior) * (int)$productoActual['stock'], 2),
+                    'Cambio del precio de venta',
+                ]);
+            }
+            $pdo->commit();
 
             echo json_encode([
                 'ok' => true,
@@ -250,6 +292,7 @@ try {
             echo json_encode(['error' => 'Método no permitido']);
     }
 } catch (PDOException $e) {
+    if ($pdo->inTransaction()) $pdo->rollBack();
     http_response_code(500);
     echo json_encode([
         'error' => 'Error en la base de datos',

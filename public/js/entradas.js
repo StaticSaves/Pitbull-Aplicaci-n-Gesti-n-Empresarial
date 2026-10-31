@@ -58,37 +58,66 @@ let contadorLineas = 0;
   const ok = await Sesion.exigir(API_BASE);
   if (!ok) return;
 
-  if (!Sesion.tienePermiso("entradas.crear")) {
-    alert("No tienes permiso para registrar entradas");
+  const puedeVerEntradas = Sesion.tienePermiso("entradas.ver");
+  const puedeCrearEntradas =
+    Sesion.tienePermiso("entradas.crear") || Sesion.tienePermiso("stock.entrada");
+  const puedeCrearProveedores = Sesion.tienePermiso("proveedores.gestionar");
+  if (!puedeVerEntradas) {
+    alert("No tienes permiso para acceder a las entradas");
     window.location.href = "index.html";
     return;
   }
 
+  inicializarPestanasEntradas();
   const u = Sesion.getUsuario();
   window.PitbullMenu?.setUser(u);
   window.PitbullMenu?.applyPermissions();
   $("#user-nombre").textContent = `${u.nombre_completo} (${u.rol_nombre})`;
   $("#btn-logout").addEventListener("click", () => Sesion.cerrar(API_BASE));
+  $("#card-form-entrada").hidden = !puedeCrearEntradas;
+  $("#btn-mostrar-proveedor").hidden = !puedeCrearProveedores;
+  $("#tabla-entradas").closest(".card").hidden = !puedeVerEntradas;
 
-  // Ocultar links sin permiso
-  if (!Sesion.tienePermiso("usuarios.ver")) {
-    const el = $("#nav-usuarios");
-    if (el) el.style.display = "none";
+  if (puedeCrearEntradas) {
+    await Promise.all([
+      cargarProductos(),
+      cargarAlmacenes(),
+      cargarProveedores(),
+    ]);
+    agregarLinea();
   }
-  if (!Sesion.tienePermiso("config.editar")) {
-    const el = $("#nav-config");
-    if (el) el.style.display = "none";
-  }
-
-  await Promise.all([
-    cargarProductos(),
-    cargarAlmacenes(),
-    cargarProveedores(),
-  ]);
-
-  agregarLinea(); // Primera línea vacía
-  await cargarEntradas();
+  if (puedeVerEntradas) await cargarEntradas();
 })();
+
+function inicializarPestanasEntradas() {
+  const tabs = [...document.querySelectorAll("[data-entries-tab]")];
+  const panels = [...document.querySelectorAll("[data-entries-panel]")];
+  const visibles = tabs.filter((tab) => {
+    const visible = tab.dataset.permission
+      .split("|")
+      .some((permiso) => Sesion.tienePermiso(permiso));
+    tab.hidden = !visible;
+    return visible;
+  });
+
+  function seleccionarTab(tab) {
+    tabs.forEach((item) => {
+      const selected = item === tab;
+      item.setAttribute("aria-selected", String(selected));
+      item.tabIndex = selected ? 0 : -1;
+    });
+    panels.forEach((panel) => {
+      panel.hidden = panel.dataset.entriesPanel !== tab.dataset.entriesTab;
+    });
+  }
+
+  visibles.forEach((tab) => {
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", "false");
+    tab.addEventListener("click", () => seleccionarTab(tab));
+  });
+  if (visibles[0]) seleccionarTab(visibles[0]);
+}
 
 // ============================================
 // CARGAR DATOS
@@ -122,18 +151,88 @@ async function cargarAlmacenes() {
 async function cargarProveedores() {
   try {
     const res = await apiFetch(`${API_BASE}/proveedores.php`);
-    proveedoresCache = await res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "No se pudieron cargar los proveedores");
+    proveedoresCache = data;
     const sel = $("#ent-proveedor");
+    const proveedorSeleccionado = sel.value;
+    sel.replaceChildren(new Option("— Sin proveedor específico —", ""));
     proveedoresCache.forEach((p) => {
       const opt = document.createElement("option");
       opt.value = p.id;
       opt.textContent = p.nombre;
       sel.appendChild(opt);
     });
+    if (proveedoresCache.some((provider) => String(provider.id) === proveedorSeleccionado)) {
+      sel.value = proveedorSeleccionado;
+    }
   } catch (e) {
     console.error("Error proveedores:", e);
+    throw e;
   }
 }
+
+$("#btn-mostrar-proveedor").addEventListener("click", () => {
+  const panel = $("#panel-nuevo-proveedor");
+  panel.hidden = !panel.hidden;
+  $("#btn-mostrar-proveedor").setAttribute("aria-expanded", String(!panel.hidden));
+  if (!panel.hidden) $("#prov-nombre").focus();
+});
+
+$("#btn-cancelar-proveedor").addEventListener("click", () => {
+  $("#form-nuevo-proveedor").querySelectorAll("input, textarea").forEach((input) => {
+    input.value = "";
+  });
+  $("#panel-nuevo-proveedor").hidden = true;
+  $("#btn-mostrar-proveedor").setAttribute("aria-expanded", "false");
+});
+
+$("#btn-guardar-proveedor").addEventListener("click", async () => {
+  if (!Sesion.tienePermiso("proveedores.gestionar")) {
+    alert("No tienes permiso para registrar proveedores");
+    return;
+  }
+  const nombre = $("#prov-nombre").value.trim();
+  if (!nombre) {
+    $("#prov-nombre").focus();
+    alert("El nombre o razón social es obligatorio");
+    return;
+  }
+  const email = $("#prov-email");
+  if (!email.checkValidity()) {
+    email.reportValidity();
+    return;
+  }
+
+  const button = $("#btn-guardar-proveedor");
+  button.disabled = true;
+  try {
+    const response = await apiFetch(`${API_BASE}/proveedores.php`, {
+      method: "POST",
+      body: JSON.stringify({
+        nombre,
+        rif: $("#prov-rif").value.trim(),
+        contacto: $("#prov-contacto").value.trim(),
+        telefono: $("#prov-telefono").value.trim(),
+        email: $("#prov-email").value.trim(),
+        direccion: $("#prov-direccion").value.trim(),
+      }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "No se pudo registrar el proveedor");
+    await cargarProveedores();
+    $("#ent-proveedor").value = String(data.id);
+    $("#form-nuevo-proveedor").querySelectorAll("input, textarea").forEach((input) => {
+      input.value = "";
+    });
+    $("#panel-nuevo-proveedor").hidden = true;
+    $("#btn-mostrar-proveedor").setAttribute("aria-expanded", "false");
+  } catch (error) {
+    alert("Error: " + error.message);
+  } finally {
+    button.disabled = false;
+  }
+});
 
 async function cargarEntradas() {
   try {
@@ -220,8 +319,8 @@ function agregarLinea() {
             <label>Subtotal
                 <input type="text" class="linea-subtotal" readonly value="Bs. 0.00" style="background:#f1f5f9">
             </label>
-            <button type="button" class="btn btn-sm btn-danger btn-eliminar-linea" title="Eliminar línea">
-                ✖
+            <button type="button" class="btn btn-sm btn-danger btn-eliminar-linea" title="Quitar línea" aria-label="Quitar línea">
+                Quitar
             </button>
         </div>
         <input type="text" class="linea-observacion" placeholder="Observación (opcional)" maxlength="255" style="margin-top:6px">
@@ -336,9 +435,9 @@ $("#form-entrada").addEventListener("submit", async (e) => {
     // Reset form
     resetFormulario();
     await cargarProductos(); // recargar porque cambió stock
-    await cargarEntradas();
+    if (Sesion.tienePermiso("entradas.ver")) await cargarEntradas();
   } catch (err) {
-    alert("❌ " + err.message);
+    alert("Error: " + err.message);
   } finally {
     btn.disabled = false;
     btn.textContent = " Registrar Entrada";
@@ -361,12 +460,4 @@ function resetFormulario() {
   $("#ent-tipo").value = "compra";
   agregarLinea();
   recalcularTotales();
-}
-if (!Sesion.tienePermiso("usuarios.ver")) {
-  const el = $("#nav-usuarios");
-  if (el) el.style.display = "none";
-}
-if (!Sesion.tienePermiso("config.editar")) {
-  const el = $("#nav-config");
-  if (el) el.style.display = "none";
 }

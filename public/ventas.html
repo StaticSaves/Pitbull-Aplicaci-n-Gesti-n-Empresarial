@@ -24,15 +24,13 @@
     <a href="caja.html" class="topnav-link"> Caja</a>
     <a href="usuarios.html" class="topnav-link" id="nav-usuarios"> Usuarios</a>
     <a href="configuracion.html" class="topnav-link" id="nav-config"> Configuración</a>
-</nav>
       </nav>
       <div class="topbar-info">
         <div class="user-menu">
           <span id="user-nombre" class="user-name">—</span>
           <button
             id="btn-logout"
-            class="btn btn-sm btn-ghost"
-            style="color: #fff; border-color: rgba(255, 255, 255, 0.3)"
+            class="btn btn-sm btn-ghost btn-topbar"
           >
             Salir
           </button>
@@ -40,104 +38,206 @@
       </div>
     </header>
 
-    <div class="pos-container">
-      <!-- COLUMNA IZQUIERDA: CATÁLOGO -->
-      <section class="pos-catalogo">
-        <div class="pos-search">
-          <input
-            type="search"
-            id="pos-buscar"
-            placeholder=" Buscar por SKU o nombre..."
-            autofocus
-          />
+    <main class="pos-container">
+      <nav class="section-tabs" aria-label="Opciones de ventas">
+        <button type="button" class="section-tab" data-sales-tab="create" data-permission="ventas.crear" aria-controls="panel-venta-nueva">Nueva venta</button>
+        <button type="button" class="section-tab" data-sales-tab="history" data-permission="ventas.ver" aria-controls="panel-historial-ventas">Historial</button>
+      </nav>
+      <p class="hint" id="ventas-no-register" role="status" hidden>El punto de venta requiere permisos para registrar ventas, consultar la caja y ver productos.</p>
+      <div id="panel-venta-nueva" data-sales-panel="create">
+      <section class="pos-ticket card">
+        <div class="pos-ticket-heading">
+          <div>
+            <p class="dashboard-eyebrow">PUNTO DE VENTA</p>
+            <h1>Registrar venta</h1>
+          </div>
+          <div class="pos-ticket-date">
+            <span>Fecha</span>
+            <strong id="pos-fecha"></strong>
+          </div>
         </div>
-        <div id="pos-productos" class="pos-productos">
-          <!-- Cards de productos -->
+
+        <section class="pos-parties" aria-label="Datos de la venta">
+          <div class="pos-party">
+            <h2>Cliente</h2>
+            <div class="pos-party-fields">
+              <label>
+                Nombre
+                <input type="text" id="cli-nombre" placeholder="Cliente general" />
+              </label>
+              <label>
+                Cédula / RIF
+                <input type="text" id="cli-cedula" placeholder="Documento de identidad" />
+              </label>
+              <label>
+                Teléfono
+                <input type="text" id="cli-telefono" placeholder="Teléfono de contacto" />
+              </label>
+            </div>
+          </div>
+          <div class="pos-party pos-seller">
+            <h2>Vendedor</h2>
+            <label>
+              Usuario
+              <input type="text" id="pos-vendedor" readonly />
+            </label>
+            <span id="pos-vendedor-rol" class="pos-seller-role"></span>
+          </div>
+        </section>
+
+        <section class="pos-products-section" aria-labelledby="pos-products-title">
+          <div class="pos-section-heading">
+            <div>
+              <h2 id="pos-products-title">Productos agregados</h2>
+              <p><span id="contador-productos">0</span> unidades en esta venta</p>
+            </div>
+            <button type="button" id="btn-vaciar" class="btn btn-ghost" disabled>
+              Vaciar carrito
+            </button>
+          </div>
+
+          <form id="form-buscar-producto" class="pos-search">
+            <label for="pos-buscar">Buscar por nombre o código</label>
+            <div class="pos-search-controls">
+              <input
+                type="search"
+                id="pos-buscar"
+                placeholder="Escribe el nombre o código del producto"
+                autocomplete="off"
+              />
+              <button type="submit" class="btn btn-primary">Buscar producto</button>
+            </div>
+          </form>
+
+          <div class="pos-cart-scroll">
+            <table class="pos-cart-table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Descripción</th>
+                  <th>Cantidad</th>
+                  <th class="align-right">Precio</th>
+                  <th class="align-right">Total</th>
+                  <th><span class="visually-hidden">Acciones</span></th>
+                </tr>
+              </thead>
+              <tbody id="pos-lineas">
+                <tr>
+                  <td colspan="6" class="empty">Busca un producto para iniciar la venta.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="pos-checkout" aria-label="Totales y pago">
+          <div class="pos-checkout-fields">
+            <label>
+              Descuento (Bs.)
+              <input type="number" id="pos-descuento" step="0.01" min="0" value="0" />
+            </label>
+            <label>
+              Método de pago
+              <select id="pos-metodo-pago">
+                <option value="efectivo">Efectivo</option>
+                <option value="pago_movil">Pago móvil</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="punto_venta">Punto de venta</option>
+              </select>
+            </label>
+            <label class="pos-iva-toggle">
+              <input type="checkbox" id="pos-aplica-iva" checked />
+              Aplicar IVA (<span id="pos-iva-pct">16</span>%)
+            </label>
+          </div>
+          <div class="pos-totales">
+            <div class="total-row">
+              <span>Subtotal</span>
+              <strong id="pos-subtotal">Bs. 0.00</strong>
+            </div>
+            <div class="total-row">
+              <span>IVA</span>
+              <strong id="pos-iva">Bs. 0.00</strong>
+            </div>
+            <div class="total-row total-final">
+              <span>TOTAL</span>
+              <strong id="pos-total">Bs. 0.00</strong>
+            </div>
+          </div>
+        </section>
+
+        <div class="pos-submit-row">
+          <button id="btn-cobrar" class="btn btn-primary btn-grande" disabled>
+            Registrar venta
+          </button>
         </div>
       </section>
-
-      <!-- COLUMNA DERECHA: CARRITO -->
-<section class="pos-carrito">
-
-    <!-- HEADER DEL CARRITO -->
-    <div class="pos-carrito-header">
-        <h2 id="carrito-titulo"> Carrito</h2>
-        <button id="btn-vaciar" class="btn btn-sm btn-ghost">Vaciar</button>
-    </div>
-
-    <!-- SECCIÓN COLAPSABLE: DATOS DEL CLIENTE -->
-    <div class="pos-seccion" id="seccion-cliente">
-        <button type="button" class="pos-seccion-header" data-target="cliente-body">
-            <span> Datos del cliente</span>
-            <span class="pos-seccion-toggle" id="toggle-cliente">▼</span>
-        </button>
-        <div class="pos-seccion-body" id="cliente-body">
-            <div class="pos-cliente">
-                <input type="text" id="cli-nombre" placeholder="Nombre del cliente">
-                <input type="text" id="cli-cedula" placeholder="Cédula">
-                <input type="text" id="cli-telefono" placeholder="Teléfono">
-            </div>
-            <div id="cliente-resumen" class="cliente-resumen" hidden>
-                <!-- Se llena cuando está colapsado -->
-            </div>
+      </div>
+      <section class="card" id="panel-historial-ventas" data-sales-panel="history" hidden>
+        <div class="card-header">
+          <div>
+            <h2>Historial de ventas</h2>
+            <p class="hint">Últimas 100 ventas registradas.</p>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-actualizar-ventas">Actualizar</button>
         </div>
-    </div>
+        <div class="table-scroll">
+          <table id="tabla-ventas">
+            <thead>
+              <tr><th>Factura</th><th>Cliente</th><th>Fecha</th><th>Vendedor</th><th>Productos</th><th>Pago</th><th>Total</th><th>Estado</th><th></th></tr>
+            </thead>
+            <tbody><tr><td colspan="9" class="empty">Cargando ventas...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
 
-    <!-- SECCIÓN COLAPSABLE: PRODUCTOS DEL CARRITO -->
-    <div class="pos-seccion" id="seccion-productos">
-        <button type="button" class="pos-seccion-header" data-target="productos-body">
-            <span> Productos (<span id="contador-productos">0</span>)</span>
-            <span class="pos-seccion-toggle" id="toggle-productos">▼</span>
-        </button>
-        <div class="pos-seccion-body" id="productos-body">
-            <div id="pos-lineas" class="pos-lineas">
-                <div class="empty">Agrega productos al carrito</div>
-            </div>
+    <dialog id="modal-productos" class="pos-product-dialog" aria-labelledby="modal-productos-titulo">
+      <div class="pos-dialog-content">
+        <div class="pos-dialog-heading">
+          <div>
+            <p class="dashboard-eyebrow">CATÁLOGO</p>
+            <h2 id="modal-productos-titulo">Buscar productos</h2>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-cerrar-busqueda">
+            Cerrar
+          </button>
         </div>
-    </div>
-
-    <!-- TOTALES (siempre visibles) -->
-    <div class="pos-totales">
-        <div class="total-row">
-            <span>Subtotal:</span>
-            <strong id="pos-subtotal">Bs. 0.00</strong>
+        <form id="form-modal-busqueda" class="pos-search">
+          <label for="modal-buscar-producto">Nombre o código del producto</label>
+          <div class="pos-search-controls">
+            <input
+              type="search"
+              id="modal-buscar-producto"
+              placeholder="Ej.: cemento o PIT-001"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn btn-primary">Buscar</button>
+          </div>
+        </form>
+        <div class="pos-dialog-results">
+          <table class="pos-cart-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Disponible</th>
+                <th class="align-right">Precio</th>
+                <th><span class="visually-hidden">Acción</span></th>
+              </tr>
+            </thead>
+            <tbody id="modal-productos-resultados">
+              <tr>
+                <td colspan="5" class="empty">Escribe el nombre o código para buscar.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="total-row">
-            <span>Descuento:</span>
-            <input type="number" id="pos-descuento" step="0.01" min="0" value="0" style="width:100px;text-align:right">
-        </div>
-        <div class="total-row">
-            <span>
-                <input type="checkbox" id="pos-aplica-iva" checked> IVA (<span id="pos-iva-pct">16</span>%):
-            </span>
-            <strong id="pos-iva">Bs. 0.00</strong>
-        </div>
-        <div class="total-row total-final">
-            <span>TOTAL:</span>
-            <strong id="pos-total">Bs. 0.00</strong>
-        </div>
-    </div>
-
-    <!-- MÉTODO DE PAGO -->
-    <div class="pos-metodo">
-        <label>Método de pago
-            <select id="pos-metodo-pago">
-                <option value="efectivo"> Efectivo</option>
-                <option value="pago_movil"> Pago Móvil</option>
-                <option value="transferencia"> Transferencia</option>
-                <option value="punto_venta"> Punto de Venta</option>
-            </select>
-        </label>
-    </div>
-
-    <!-- BOTÓN COBRAR -->
-    <button id="btn-cobrar" class="btn btn-primary btn-block btn-grande" disabled>
-         COBRAR Y REGISTRAR
-    </button>
-</section>
-    </div>
+      </div>
+    </dialog>
 
     <script src="js/sesion.js"></script>
+    <script src="js/branding.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/ventas.js"></script>
   </body>

@@ -34,8 +34,7 @@
           <span id="user-nombre" class="user-name">—</span>
           <button
             id="btn-logout"
-            class="btn btn-sm btn-ghost"
-            style="color: #fff; border-color: rgba(255, 255, 255, 0.3)"
+            class="btn btn-sm btn-ghost btn-topbar"
           >
             Salir
           </button>
@@ -44,6 +43,11 @@
     </header>
 
     <main class="container">
+      <nav class="section-tabs" aria-label="Opciones de entradas">
+        <button type="button" class="section-tab" data-entries-tab="create" data-permission="entradas.crear|stock.entrada" aria-controls="panel-entrada">Registrar entrada</button>
+        <button type="button" class="section-tab" data-entries-tab="history" data-permission="entradas.ver" aria-controls="panel-historial-entradas">Historial</button>
+      </nav>
+      <div id="panel-entrada" data-entries-panel="create">
       <!-- FORMULARIO DE ENTRADA -->
       <section class="card" id="card-form-entrada">
         <h2>Nueva Entrada de Mercancía</h2>
@@ -54,12 +58,15 @@
 
         <form id="form-entrada">
           <div class="grid-3">
-            <label
-              >Proveedor
-              <select id="ent-proveedor">
-                <option value="">— Sin proveedor específico —</option>
-              </select>
-            </label>
+            <div>
+              <label for="ent-proveedor">Proveedor</label>
+              <div class="actions">
+                <select id="ent-proveedor">
+                  <option value="">— Sin proveedor específico —</option>
+                </select>
+                <button type="button" class="btn btn-sm btn-ghost" id="btn-mostrar-proveedor" aria-controls="panel-nuevo-proveedor" aria-expanded="false" hidden>Registrar proveedor</button>
+              </div>
+            </div>
             <label
               >Almacén destino *
               <select id="ent-almacen" required>
@@ -75,6 +82,36 @@
               </select>
             </label>
           </div>
+
+          <section class="card" id="panel-nuevo-proveedor" hidden>
+            <h3>Registrar proveedor</h3>
+            <div id="form-nuevo-proveedor">
+              <div class="grid">
+                <label>Nombre o razón social *
+                  <input type="text" id="prov-nombre" maxlength="150" required />
+                </label>
+                <label>RIF
+                  <input type="text" id="prov-rif" maxlength="20" />
+                </label>
+                <label>Persona de contacto
+                  <input type="text" id="prov-contacto" maxlength="150" />
+                </label>
+                <label>Teléfono
+                  <input type="tel" id="prov-telefono" maxlength="30" />
+                </label>
+                <label>Correo electrónico
+                  <input type="email" id="prov-email" maxlength="150" />
+                </label>
+              </div>
+              <label>Dirección
+                <textarea id="prov-direccion" rows="2"></textarea>
+              </label>
+              <div class="actions">
+                <button type="button" class="btn btn-primary" id="btn-guardar-proveedor">Guardar proveedor</button>
+                <button type="button" class="btn btn-ghost" id="btn-cancelar-proveedor">Cancelar</button>
+              </div>
+            </div>
+          </section>
 
           <label
             >Observaciones
@@ -126,7 +163,9 @@
           </div>
         </form>
       </section>
+      </div>
 
+      <div id="panel-historial-entradas" data-entries-panel="history" hidden>
       <!-- HISTORIAL DE ENTRADAS -->
       <section class="card">
         <div class="card-header">
@@ -153,9 +192,11 @@
           </tbody>
         </table>
       </section>
+      </div>
     </main>
 
     <script src="js/sesion.js"></script>
+    <script src="js/branding.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/entradas.js"></script>
   </body>

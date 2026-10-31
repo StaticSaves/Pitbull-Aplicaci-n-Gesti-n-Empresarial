@@ -1,6 +1,6 @@
 /**
  * PITBULL Manager v1.0
- * Gestión de usuarios (solo gerente)
+ * Gestión de usuarios y permisos por rol
  */
 
 const API_BASE = "api";
@@ -46,6 +46,9 @@ async function apiFetch(url, options = {}) {
 let usuariosCache = [];
 let usuarioActualId = null;
 let usuarioPasswordId = null;
+let rolesCache = [];
+let catalogoPermisos = [];
+let rolSeleccionado = null;
 
 // ============================================
 // INICIALIZAR
@@ -54,40 +57,186 @@ let usuarioPasswordId = null;
   const ok = await Sesion.exigir(API_BASE);
   if (!ok) return;
 
-  if (!Sesion.tienePermiso("usuarios.ver")) {
-    alert("No tienes permiso para acceder a la gestión de usuarios");
+  const puedeVerUsuarios = Sesion.tienePermiso("usuarios.ver");
+  const puedeGestionarRoles = Sesion.tienePermiso("roles.gestionar");
+  const puedeCrearUsuarios = Sesion.tienePermiso("usuarios.crear");
+  const puedeEditarUsuarios = Sesion.tienePermiso("usuarios.editar");
+  if (!puedeVerUsuarios && !puedeGestionarRoles && !puedeCrearUsuarios && !puedeEditarUsuarios) {
+    alert("No tienes permiso para acceder a esta sección");
     window.location.href = "index.html";
     return;
   }
 
   const u = Sesion.getUsuario();
+  inicializarPestanasUsuarios();
   window.PitbullMenu?.setUser(u);
   window.PitbullMenu?.applyPermissions();
   usuarioActualId = u.id;
   $("#user-nombre").textContent = `${u.nombre_completo} (${u.rol_nombre})`;
   $("#btn-logout").addEventListener("click", () => Sesion.cerrar(API_BASE));
 
-  await cargarRoles();
-  await cargarUsuarios();
+  const formCard = $("#form-usuario").closest(".card");
+  formCard.hidden = !puedeCrearUsuarios && !puedeEditarUsuarios;
+  if (puedeVerUsuarios) {
+    await cargarUsuarios();
+  } else {
+    $("#tabla-usuarios").closest(".card").hidden = true;
+  }
+  if (puedeCrearUsuarios || puedeEditarUsuarios) {
+    if (!puedeCrearUsuarios) formCard.hidden = true;
+    try {
+      await cargarRoles();
+    } catch (error) {
+      alert("Error al cargar los roles: " + error.message);
+    }
+  }
+  if (puedeGestionarRoles) await cargarPermisosRoles();
 })();
+
+function inicializarPestanasUsuarios() {
+  const tabs = [...document.querySelectorAll("[data-users-tab]")];
+  const panels = [...document.querySelectorAll("[data-users-panel]")];
+  const visibles = tabs.filter((tab) => {
+    const visible = tab.dataset.permission
+      .split("|")
+      .some((permiso) => Sesion.tienePermiso(permiso));
+    tab.hidden = !visible;
+    if (tab.dataset.usersTab === "crear" && !Sesion.tienePermiso("usuarios.crear")) {
+      tab.textContent = "Editar usuario";
+    }
+    return visible;
+  });
+
+  panels.forEach((panel) => {
+    const permisos = {
+      crear: "usuarios.crear|usuarios.editar",
+      usuarios: "usuarios.ver",
+      roles: "roles.gestionar",
+    }[panel.dataset.usersPanel];
+    panel.hidden = !permisos.split("|").some((permiso) => Sesion.tienePermiso(permiso));
+  });
+
+  visibles.forEach((tab) => {
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", "false");
+    tab.addEventListener("click", () => seleccionarPestanaUsuarios(tab.dataset.usersTab));
+  });
+  const pestanaInicial = puedeInicializarUsuarios();
+  if (pestanaInicial) seleccionarPestanaUsuarios(pestanaInicial);
+}
+
+function puedeInicializarUsuarios() {
+  if (Sesion.tienePermiso("usuarios.crear")) return "crear";
+  if (Sesion.tienePermiso("usuarios.ver")) return "usuarios";
+  if (Sesion.tienePermiso("usuarios.editar")) return "crear";
+  return "roles";
+}
+
+function seleccionarPestanaUsuarios(nombre) {
+  const tabs = [...document.querySelectorAll("[data-users-tab]")];
+  const panels = [...document.querySelectorAll("[data-users-panel]")];
+  const seleccionada = tabs.find((tab) => tab.dataset.usersTab === nombre && !tab.hidden);
+  if (!seleccionada) return;
+
+  tabs.forEach((tab) => {
+    const selected = tab === seleccionada;
+    tab.setAttribute("aria-selected", String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+  });
+  panels.forEach((panel) => {
+    const permissions = {
+      crear: "usuarios.crear|usuarios.editar",
+      usuarios: "usuarios.ver",
+      roles: "roles.gestionar",
+    }[panel.dataset.usersPanel];
+    panel.hidden = panel.dataset.usersPanel !== nombre ||
+      !permissions.split("|").some((permission) => Sesion.tienePermiso(permission));
+  });
+}
 
 // ============================================
 // CARGAR ROLES
 // ============================================
 async function cargarRoles() {
+  const res = await apiFetch(`${API_BASE}/roles.php`);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "No se pudieron cargar los roles");
+  const sel = $("#user-rol");
+  data.forEach((r) => {
+    const opt = document.createElement("option");
+    opt.value = r.id;
+    opt.textContent = `${r.nombre} — ${r.descripcion || ""}`;
+    sel.appendChild(opt);
+  });
+}
+
+async function cargarPermisosRoles() {
+  const contenedor = $("#role-permissions");
   try {
-    const res = await apiFetch(`${API_BASE}/roles.php`);
+    const res = await apiFetch(`${API_BASE}/roles.php?action=permisos`);
     const data = await res.json();
-    const sel = $("#user-rol");
-    data.forEach((r) => {
-      const opt = document.createElement("option");
-      opt.value = r.id;
-      opt.textContent = `${r.nombre} — ${r.descripcion || ""}`;
-      sel.appendChild(opt);
+    if (!res.ok) throw new Error(data.error || "No se pudieron cargar los permisos");
+    rolesCache = data.roles;
+    catalogoPermisos = data.permisos;
+
+    const selector = $("#role-selector");
+    selector.replaceChildren();
+    rolesCache.forEach((rol) => {
+      const option = document.createElement("option");
+      option.value = rol.id;
+      option.textContent = rol.nombre;
+      selector.appendChild(option);
     });
-  } catch (e) {
-    console.error("Error roles:", e);
+    selector.addEventListener("change", () => renderPermisosRol());
+    renderPermisosRol();
+  } catch (error) {
+    contenedor.innerHTML = `<p class="empty" role="alert">Error: ${escapeHtml(error.message)}</p>`;
   }
+}
+
+function renderPermisosRol() {
+  const selector = $("#role-selector");
+  rolSeleccionado = rolesCache.find((rol) => String(rol.id) === selector.value);
+  const contenedor = $("#role-permissions");
+  if (!rolSeleccionado) {
+    contenedor.textContent = "No hay roles disponibles.";
+    return;
+  }
+
+  const permisosRol = new Set(rolSeleccionado.permisos);
+  const grupos = new Map();
+  const nombresModulos = {
+    inventario: "Inventario",
+    ventas: "Ventas",
+    pedidos: "Pedidos",
+    caja: "Caja",
+    finanzas: "Finanzas",
+    configuracion: "Administración",
+  };
+  catalogoPermisos.forEach((permiso) => {
+    if (!grupos.has(permiso.modulo)) grupos.set(permiso.modulo, []);
+    grupos.get(permiso.modulo).push(permiso);
+  });
+
+  contenedor.innerHTML = [...grupos.entries()].map(([modulo, permisos]) => `
+    <section class="permission-group" aria-labelledby="permission-group-${escapeHtml(modulo)}">
+      <h3 id="permission-group-${escapeHtml(modulo)}">${escapeHtml(nombresModulos[modulo] || modulo)}</h3>
+      ${permisos.map((permiso) => {
+        const bloqueado =
+          permiso.clave === "roles.gestionar" &&
+          rolSeleccionado.nombre.toLowerCase() !== "gerente";
+        const checked = permiso.clave === "roles.gestionar"
+          ? rolSeleccionado.nombre.toLowerCase() === "gerente"
+          : permisosRol.has(permiso.clave);
+        return `
+          <label class="permission-option">
+            <input type="checkbox" data-role-permission="${escapeHtml(permiso.clave)}"
+              ${checked ? "checked" : ""} ${bloqueado ? "disabled" : ""}>
+            <span>${escapeHtml(permiso.descripcion || permiso.clave)}<small>${escapeHtml(permiso.clave)}</small></span>
+          </label>`;
+      }).join("")}
+    </section>
+  `).join("");
 }
 
 // ============================================
@@ -130,13 +279,13 @@ function renderTabla(lista) {
     let acciones = "";
     if (puedoEditar) {
       acciones += `<button class="btn btn-sm btn-edit" data-action="edit" data-id="${u.id}">Editar</button>`;
-      acciones += `<button class="btn btn-sm" style="background:#f59e0b;color:#fff" data-action="pass" data-id="${u.id}">🔑</button>`;
+      acciones += `<button class="btn btn-sm btn-edit" data-action="pass" data-id="${u.id}" title="Cambiar contraseña">Cambiar clave</button>`;
     }
     if (puedoEliminar && u.id != usuarioActualId) {
       if (u.activo == 1) {
         acciones += `<button class="btn btn-sm btn-danger" data-action="del" data-id="${u.id}">Desactivar</button>`;
       } else {
-        acciones += `<button class="btn btn-sm" style="background:var(--verde);color:#fff" data-action="reac" data-id="${u.id}">Reactivar</button>`;
+        acciones += `<button class="btn btn-sm btn-primary" data-action="reac" data-id="${u.id}">Reactivar</button>`;
       }
     }
     if (!acciones)
@@ -163,8 +312,15 @@ function renderTabla(lista) {
 $("#form-usuario").addEventListener("submit", async (e) => {
   e.preventDefault();
   const id = $("#user-id").value;
+  if (!id && !Sesion.tienePermiso("usuarios.crear")) {
+    alert("No tienes permiso para crear usuarios");
+    return;
+  }
+  if (id && !Sesion.tienePermiso("usuarios.editar")) {
+    alert("No tienes permiso para editar usuarios");
+    return;
+  }
 
-  // ⚠️ AQUÍ ESTABA EL BUG: ahora usamos user-nombre-completo
   const payload = {
     cedula: $("#user-cedula").value.trim(),
     nombre_completo: $("#user-nombre-completo").value.trim(),
@@ -189,9 +345,9 @@ $("#form-usuario").addEventListener("submit", async (e) => {
     if (!res.ok) throw new Error(data.error || "Error");
 
     resetForm();
-    await cargarUsuarios();
+    if (Sesion.tienePermiso("usuarios.ver")) await cargarUsuarios();
   } catch (err) {
-    alert("❌ " + err.message);
+    alert("Error: " + err.message);
   }
 });
 
@@ -215,8 +371,8 @@ $("#tabla-usuarios").addEventListener("click", async (e) => {
       return;
     }
     $("#user-id").value = u.id;
+    $("#form-usuario").closest(".card").hidden = false;
     $("#user-cedula").value = u.cedula || "";
-    // ⚠️ CORREGIDO: user-nombre-completo
     $("#user-nombre-completo").value = u.nombre_completo;
     $("#user-email").value = u.email;
     $("#user-telefono").value = u.telefono || "";
@@ -225,8 +381,9 @@ $("#tabla-usuarios").addEventListener("click", async (e) => {
     $("#label-password").style.display = "none";
     $("#user-password").required = false;
 
-    $("#form-title").textContent = `✏️ Editar Usuario #${u.id}`;
+    $("#form-title").textContent = `Editar usuario #${u.id}`;
     $("#btn-cancelar").hidden = false;
+    seleccionarPestanaUsuarios("crear");
     window.scrollTo({ top: 0, behavior: "smooth" });
     return;
   }
@@ -297,6 +454,10 @@ function resetForm() {
   $("#btn-cancelar").hidden = true;
   $("#label-password").style.display = "block";
   $("#user-password").required = true;
+  if (!Sesion.tienePermiso("usuarios.crear")) {
+    $("#form-usuario").closest(".card").hidden = true;
+    seleccionarPestanaUsuarios("usuarios");
+  }
 }
 
 // ============================================
@@ -366,11 +527,30 @@ $("#buscar").addEventListener("input", () => {
   );
   renderTabla(filtrados);
 });
-if (!Sesion.tienePermiso("usuarios.ver")) {
-  const el = $("#nav-usuarios");
-  if (el) el.style.display = "none";
-}
-if (!Sesion.tienePermiso("config.editar")) {
-  const el = $("#nav-config");
-  if (el) el.style.display = "none";
-}
+
+$("#btn-guardar-permisos").addEventListener("click", async () => {
+  if (!rolSeleccionado) return;
+  const btn = $("#btn-guardar-permisos");
+  const mensaje = $("#msg-permisos");
+  const permisos = [...document.querySelectorAll("[data-role-permission]:checked")]
+    .map((input) => input.dataset.rolePermission);
+  btn.disabled = true;
+  mensaje.hidden = true;
+
+  try {
+    const res = await apiFetch(`${API_BASE}/roles.php?id=${rolSeleccionado.id}`, {
+      method: "PUT",
+      body: JSON.stringify({ permisos }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "No se pudieron guardar los permisos");
+    mensaje.textContent = "Permisos actualizados. La pantalla se actualizará.";
+    mensaje.hidden = false;
+    await Sesion.verificarConServidor(API_BASE);
+    window.location.reload();
+  } catch (error) {
+    alert("Error: " + error.message);
+  } finally {
+    btn.disabled = false;
+  }
+});

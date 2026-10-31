@@ -50,24 +50,50 @@ let cajaActual = null;
   const ok = await Sesion.exigir(API_BASE);
   if (!ok) return;
 
+  if (!Sesion.tienePermiso("caja.ver")) {
+    alert("No tienes permiso para acceder a la sección de caja");
+    window.location.href = "index.html";
+    return;
+  }
+
   const u = Sesion.getUsuario();
+  inicializarPestanasCaja();
   window.PitbullMenu?.setUser(u);
   window.PitbullMenu?.applyPermissions();
   $("#user-nombre").textContent = `${u.nombre_completo} (${u.rol_nombre})`;
   $("#btn-logout").addEventListener("click", () => Sesion.cerrar(API_BASE));
 
-  if (!Sesion.tienePermiso("usuarios.ver")) {
-    const el = $("#nav-usuarios");
-    if (el) el.style.display = "none";
-  }
-  if (!Sesion.tienePermiso("config.editar")) {
-    const el = $("#nav-config");
-    if (el) el.style.display = "none";
-  }
-
   await cargarEstado();
   await cargarHistorial();
 })();
+
+function inicializarPestanasCaja() {
+  const tabs = [...document.querySelectorAll("[data-caja-tab]")];
+  const panels = [...document.querySelectorAll("[data-caja-panel]")];
+  const visibles = tabs.filter((tab) => {
+    const visible = Sesion.tienePermiso(tab.dataset.permission);
+    tab.hidden = !visible;
+    return visible;
+  });
+
+  function seleccionarTab(tab) {
+    tabs.forEach((item) => {
+      const selected = item === tab;
+      item.setAttribute("aria-selected", String(selected));
+      item.tabIndex = selected ? 0 : -1;
+    });
+    panels.forEach((panel) => {
+      panel.hidden = panel.dataset.cajaPanel !== tab.dataset.cajaTab;
+    });
+  }
+
+  visibles.forEach((tab) => {
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", "false");
+    tab.addEventListener("click", () => seleccionarTab(tab));
+  });
+  if (visibles[0]) seleccionarTab(visibles[0]);
+}
 
 // ============================================
 // ESTADO ACTUAL
@@ -80,7 +106,7 @@ async function cargarEstado() {
     const info = $("#caja-info");
     if (!cajaActual || cajaActual.estado === "cerrada") {
       info.innerHTML = `<div class="empty">No tienes caja abierta. Abre una para comenzar a vender.</div>`;
-      $("#card-abrir").hidden = false;
+      $("#card-abrir").hidden = !Sesion.tienePermiso("caja.abrir");
       $("#card-cerrar").hidden = true;
       $("#card-movimiento").hidden = true;
     } else {
@@ -105,8 +131,8 @@ async function cargarEstado() {
                 </div>
             `;
       $("#card-abrir").hidden = true;
-      $("#card-cerrar").hidden = false;
-      $("#card-movimiento").hidden = false;
+            $("#card-cerrar").hidden = !Sesion.tienePermiso("caja.cerrar");
+            $("#card-movimiento").hidden = !Sesion.tienePermiso("caja.movimiento_manual");
     }
   } catch (e) {
     $("#caja-info").innerHTML =

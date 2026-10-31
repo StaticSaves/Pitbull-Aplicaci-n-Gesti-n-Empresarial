@@ -25,7 +25,7 @@
       <div class="topbar-info">
         <div class="user-menu">
           <span id="user-nombre" class="user-name">—</span>
-          <button id="btn-logout" class="btn btn-sm btn-ghost" type="button" style="color:#fff;border-color:rgba(255,255,255,.3)">Salir</button>
+          <button id="btn-logout" class="btn btn-sm btn-ghost btn-topbar" type="button">Salir</button>
         </div>
       </div>
     </header>
@@ -39,6 +39,14 @@
         </div>
       </section>
 
+      <nav class="section-tabs" aria-label="Opciones de productos">
+        <button type="button" class="section-tab" data-product-tab="catalog" data-permission="productos.ver" aria-controls="panel-productos-catalogo">Catálogo</button>
+        <button type="button" class="section-tab" data-product-tab="form" data-permission="productos.crear|productos.editar" aria-controls="panel-productos-form">Crear o editar</button>
+        <button type="button" class="section-tab" data-product-tab="movements" data-permission="stock.merma|stock.entrada" aria-controls="panel-productos-movimientos">Movimientos</button>
+      </nav>
+
+      <div id="panel-productos-form" data-product-panel="form" hidden>
+      <p class="hint" id="product-edit-hint" hidden>Selecciona un producto del catálogo y elige «Editar» para modificarlo.</p>
       <section class="card">
         <h2 id="form-title">Nuevo Producto</h2>
         <form id="form-producto">
@@ -51,23 +59,61 @@
           </div>
           <label>Descripción<textarea id="prod-descripcion" rows="2" maxlength="500"></textarea></label>
           <div class="grid">
-            <label>Costo (Bs.)<input type="number" step="0.01" min="0" id="prod-costo" value="0" /></label>
+            <label id="label-prod-costo">Costo (Bs.)<input type="number" step="0.01" min="0" id="prod-costo" value="0" /></label>
             <label>Precio venta (Bs.) *<input type="number" step="0.01" min="0" id="prod-precio" value="0" required /></label>
             <label>Precio mayorista (Bs.)<input type="number" step="0.01" min="0" id="prod-precio-mayorista" placeholder="Opcional" /></label>
             <label>Stock<input type="number" min="0" id="prod-stock" value="0" /></label>
             <label>Stock mínimo<input type="number" min="0" id="prod-stock-minimo" value="0" /></label>
           </div>
           <div class="actions">
-            <button type="submit" class="btn btn-primary">Guardar producto</button>
+            <button type="submit" id="btn-guardar-producto" class="btn btn-primary">Guardar producto</button>
             <button type="button" id="btn-cancelar" class="btn btn-ghost" hidden>Cancelar</button>
+          </div>
+          <p id="msg-producto" class="msg-exito" role="status" hidden></p>
+        </form>
+      </section>
+      </div>
+
+      <section class="card" id="panel-productos-movimientos" data-product-panel="movements" hidden>
+        <h2>Registrar movimiento de inventario</h2>
+        <p class="hint">Las mermas, devoluciones y ajustes actualizan las existencias y el reporte de impacto al precio de venta.</p>
+        <form id="form-movimiento-producto">
+          <div class="grid">
+            <label>Movimiento
+              <select id="mov-prod-tipo" required>
+                <option value="merma" data-permission="stock.merma">Merma</option>
+                <option value="devolucion" data-permission="stock.entrada">Devolución</option>
+                <option value="ajuste_stock" data-permission="stock.merma">Ajuste de existencia (+/-)</option>
+              </select>
+            </label>
+            <label>Producto
+              <select id="mov-prod-producto" required>
+                <option value="">— Seleccionar —</option>
+              </select>
+            </label>
+            <label>Cantidad (en ajustes puede ser negativa)
+              <input type="number" id="mov-prod-cantidad" required step="1" />
+            </label>
+          </div>
+          <label>Motivo
+            <input type="text" id="mov-prod-motivo" maxlength="255" required />
+          </label>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary">Registrar movimiento</button>
+            <span id="mov-prod-msg" class="msg-exito" role="status" hidden></span>
           </div>
         </form>
       </section>
 
+      <div id="panel-productos-catalogo" data-product-panel="catalog">
       <section class="card">
         <div class="card-header">
           <h2>Listado de productos</h2>
-          <input type="search" id="buscar" placeholder="Buscar por SKU o nombre..." class="search-input" />
+          <div class="actions">
+            <button type="button" class="btn btn-sm btn-ghost" id="btn-exportar-productos-excel">Exportar Excel (CSV)</button>
+            <button type="button" class="btn btn-sm btn-ghost" id="btn-exportar-productos-pdf">Exportar PDF</button>
+            <input type="search" id="buscar" placeholder="Buscar por SKU o nombre..." class="search-input" />
+          </div>
         </div>
         <div class="table-scroll">
           <table id="tabla-productos">
@@ -76,8 +122,10 @@
           </table>
         </div>
       </section>
+      </div>
     </main>
     <script src="js/sesion.js"></script>
+    <script src="js/branding.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/app.js"></script>
   </body>

@@ -5,6 +5,8 @@ const dashboardMessage = document.getElementById("dashboard-message");
 const salesChart = document.getElementById("sales-chart");
 const lowStockList = document.getElementById("low-stock-list");
 const recentSalesBody = document.getElementById("recent-sales-body");
+const productImpactChart = document.getElementById("product-impact-chart");
+const productImpactSummary = document.getElementById("product-impact-summary");
 const sidebar = document.getElementById("dashboard-sidebar");
 const sidebarToggle = document.getElementById("sidebar-toggle");
 const sidebarBackdrop = document.getElementById("sidebar-backdrop");
@@ -49,30 +51,45 @@ function showMessage(message, isError = false) {
 
 function applyPermissions() {
   document.querySelectorAll("[data-permission]").forEach((element) => {
-    if (!Sesion.tienePermiso(element.dataset.permission)) {
-      element.hidden = true;
-    }
+    const permits = element.dataset.permission.split("|");
+    element.hidden = !permits.some((permit) => Sesion.tienePermiso(permit));
   });
 
-  if (!Sesion.tienePermiso("ventas.ver")) {
-    document.querySelector('[data-metric="today-sales"]').hidden = true;
-    document.querySelector('[data-metric="month-sales"]').hidden = true;
-    document.querySelector('[data-section="sales"]').hidden = true;
-    document.querySelector('[data-section="recent-sales"]').hidden = true;
-  }
+  document.querySelectorAll(".dashboard-sidebar .sidebar-section-label").forEach((label) => {
+    let sibling = label.nextElementSibling;
+    let hasVisibleLink = false;
+    while (sibling && !sibling.classList.contains("sidebar-section-label")) {
+      if (sibling.matches(".sidebar-link:not([hidden])")) hasVisibleLink = true;
+      sibling = sibling.nextElementSibling;
+    }
+    label.hidden = !hasVisibleLink;
+  });
 
-  if (!Sesion.tienePermiso("productos.ver")) {
-    document.querySelector('[data-metric="low-stock"]').hidden = true;
-    document.querySelector('[data-section="inventory"]').hidden = true;
+  const tabs = [...document.querySelectorAll("[data-dashboard-tab]")];
+  const panels = [...document.querySelectorAll("[data-dashboard-panel]")];
+  const visibles = tabs.filter((tab) => {
+    const visible = tab.dataset.permission
+      .split("|")
+      .some((permission) => Sesion.tienePermiso(permission));
+    tab.hidden = !visible;
+    return visible;
+  });
+  function selectTab(tab) {
+    tabs.forEach((item) => {
+      const selected = item === tab;
+      item.setAttribute("aria-selected", String(selected));
+      item.tabIndex = selected ? 0 : -1;
+    });
+    panels.forEach((panel) => {
+      panel.hidden = panel.dataset.dashboardPanel !== tab.dataset.dashboardTab;
+    });
   }
-
-  if (
-    !Sesion.tienePermiso("caja.ver") &&
-    !Sesion.tienePermiso("caja.abrir") &&
-    !Sesion.tienePermiso("caja.cerrar")
-  ) {
-    document.querySelector('[data-metric="cash"]').hidden = true;
-  }
+  visibles.forEach((tab) => {
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", "false");
+    tab.addEventListener("click", () => selectTab(tab));
+  });
+  if (visibles[0]) selectTab(visibles[0]);
 }
 
 function setMobileSidebarOpen(isOpen) {
@@ -177,6 +194,47 @@ function renderSalesChart(dailySales) {
     .join("");
 }
 
+function renderProductImpact(movements) {
+  const byDay = new Map(movements.map((day) => [day.movement_date, Number(day.impact)]));
+  const days = [];
+  for (let offset = 29; offset >= 0; offset -= 1) {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() - offset);
+    const key = [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, "0"),
+      String(date.getDate()).padStart(2, "0"),
+    ].join("-");
+    days.push({ key, date, impact: byDay.get(key) || 0 });
+  }
+
+  const maxImpact = Math.max(...days.map((day) => Math.abs(day.impact)), 1);
+  productImpactChart.innerHTML = days.map((day) => {
+    const positive = day.impact >= 0;
+    const height = Math.abs(day.impact) ? Math.max(Math.abs(day.impact) / maxImpact * 100, 8) : 0;
+    return `
+      <div class="chart-column impact-column" title="${escapeHtml(formatMoney(day.impact))}">
+        <span class="chart-value">${day.impact ? escapeHtml(formatMoney(day.impact)) : ""}</span>
+        <div class="chart-track"><span class="chart-bar ${positive ? "impact-positive" : "impact-negative"}" style="height:${height}%"></span></div>
+        <span class="chart-label">${escapeHtml(formatDate(day.date, { day: "numeric", month: "short" }))}</span>
+      </div>`;
+  }).join("");
+
+  const total = days.reduce((sum, day) => sum + day.impact, 0);
+  const priceChanges = movements.reduce((sum, day) => sum + Number(day.price_changes || 0), 0);
+  const priceIncreases = movements.reduce(
+    (sum, day) => sum + Number(day.price_increases_impact || 0),
+    0,
+  );
+  const priceDecreases = movements.reduce(
+    (sum, day) => sum + Number(day.price_decreases_impact || 0),
+    0,
+  );
+  productImpactSummary.textContent =
+    `Impacto neto del período: ${formatMoney(total)}. Cambios de precio: ${priceChanges} · Subidas: ${formatMoney(priceIncreases)} · Bajadas: ${formatMoney(priceDecreases)}. Los valores se calculan sobre el stock al momento del cambio.`;
+}
+
 function renderInventory(inventory) {
   document.getElementById("metric-low-stock").textContent =
     Number(inventory.low_stock_count).toLocaleString("es-VE");
@@ -186,7 +244,9 @@ function renderInventory(inventory) {
   if (!inventory.low_stock.length) {
     lowStockList.innerHTML = `
       <div class="dashboard-empty">
-        <span class="empty-check" aria-hidden="true">✓</span>
+        <span class="empty-check" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+        </span>
         <strong>Inventario al día</strong>
         <span>No hay productos por debajo del mínimo.</span>
       </div>`;
@@ -249,12 +309,11 @@ function renderDashboard(data) {
   }
 
   if (data.inventory) renderInventory(data.inventory);
+  if (data.product_impact) renderProductImpact(data.product_impact.daily || []);
 
   if (data.cash) {
     const isOpen = data.cash.my_open_registers > 0;
     document.getElementById("metric-cash").textContent = isOpen ? "Abierta" : "Cerrada";
-    document.querySelector('[data-metric="cash"] .metric-icon').textContent =
-      isOpen ? "✓" : "▣";
     document.querySelector('[data-metric="cash"] .metric-icon').classList.toggle("cash-open", isOpen);
   }
 

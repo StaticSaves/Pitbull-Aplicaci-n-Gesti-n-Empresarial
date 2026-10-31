@@ -34,8 +34,7 @@
           <span id="user-nombre" class="user-name">—</span>
           <button
             id="btn-logout"
-            class="btn btn-sm btn-ghost"
-            style="color: #fff; border-color: rgba(255, 255, 255, 0.3)"
+            class="btn btn-sm btn-ghost btn-topbar"
           >
             Salir
           </button>
@@ -44,6 +43,13 @@
     </header>
 
     <main class="container">
+      <nav class="section-tabs" aria-label="Administración de usuarios">
+        <button type="button" class="section-tab" data-users-tab="crear" data-permission="usuarios.crear|usuarios.editar" aria-controls="panel-crear-usuario">Crear usuario</button>
+        <button type="button" class="section-tab" data-users-tab="usuarios" data-permission="usuarios.ver" aria-controls="panel-usuarios">Ver y editar existentes</button>
+        <button type="button" class="section-tab" data-users-tab="roles" data-permission="roles.gestionar" aria-controls="panel-roles" hidden>Permisos por rol</button>
+      </nav>
+
+      <div id="panel-crear-usuario" data-users-panel="crear" hidden>
       <section class="card">
         <h2 id="form-title">Nuevo Usuario</h2>
         <form id="form-usuario">
@@ -106,19 +112,23 @@
               class="btn btn-ghost"
               hidden
             >
-              ✖ Cancelar
+              Cancelar
             </button>
           </div>
         </form>
       </section>
+      </div>
 
+      <div id="panel-usuarios" data-users-panel="usuarios" hidden>
       <section class="card">
         <div class="card-header">
-          <h2>Usuarios del Sistema</h2>
+          <div>
+            <h2>Usuarios del Sistema</h2>
+          </div>
           <input
             type="search"
             id="buscar"
-            placeholder="🔍 Buscar..."
+            placeholder="Buscar usuario..."
             class="search-input"
           />
         </div>
@@ -141,6 +151,24 @@
             </tr>
           </tbody>
         </table>
+      </section>
+      </div>
+
+      <section class="card" id="panel-roles" data-users-panel="roles" hidden>
+        <div class="card-header">
+          <div>
+            <h2>Permisos por rol</h2>
+            <p class="hint">Define qué secciones puede abrir cada rol y qué acciones tiene permitidas.</p>
+          </div>
+          <label for="role-selector">Rol
+            <select id="role-selector"></select>
+          </label>
+        </div>
+        <div id="role-permissions" class="permission-groups"></div>
+        <div class="actions">
+          <button type="button" id="btn-guardar-permisos" class="btn btn-primary">Guardar permisos</button>
+          <span id="msg-permisos" class="msg-exito" role="status" hidden></span>
+        </div>
       </section>
     </main>
 
@@ -180,6 +208,7 @@
     </div>
 
     <script src="js/sesion.js"></script>
+    <script src="js/branding.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/usuarios.js"></script>
   </body>

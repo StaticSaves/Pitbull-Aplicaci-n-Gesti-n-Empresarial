@@ -53,12 +53,14 @@ try {
     $canViewCash = in_array('caja.ver', $permissions, true) ||
         in_array('caja.abrir', $permissions, true) ||
         in_array('caja.cerrar', $permissions, true);
+    $canViewReports = in_array('reportes.ver', $permissions, true);
 
     $data = [
         'generated_at' => date(DATE_ATOM),
         'inventory' => null,
         'sales' => null,
         'cash' => null,
+        'product_impact' => null,
     ];
 
     if ($canViewInventory) {
@@ -131,6 +133,24 @@ try {
         $stmt->execute([$session['usuario_id']]);
         $data['cash'] = [
             'my_open_registers' => (int)$stmt->fetchColumn(),
+        ];
+    }
+
+    if ($canViewReports) {
+        $data['product_impact'] = [
+            'daily' => $pdo->query("
+                SELECT
+                    DATE(created_at) AS movement_date,
+                    SUM(impacto) AS impact,
+                    SUM(CASE WHEN tipo = 'ajuste_precio' THEN 1 ELSE 0 END) AS price_changes,
+                    SUM(CASE WHEN tipo = 'ajuste_precio' AND impacto > 0 THEN impacto ELSE 0 END) AS price_increases_impact,
+                    SUM(CASE WHEN tipo = 'ajuste_precio' AND impacto < 0 THEN impacto ELSE 0 END) AS price_decreases_impact
+                FROM movimientos_producto
+                WHERE created_at >= CURDATE() - INTERVAL 29 DAY
+                  AND created_at < CURDATE() + INTERVAL 1 DAY
+                GROUP BY DATE(created_at)
+                ORDER BY movement_date
+            ")->fetchAll(),
         ];
     }
 

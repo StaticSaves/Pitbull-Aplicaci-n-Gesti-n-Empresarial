@@ -35,7 +35,7 @@
           </a>
 
           <div class="sidebar-section-label sidebar-section-spaced">OPERACIONES</div>
-          <a href="entradas.html" class="sidebar-link" data-permission="stock.entrada" title="Entradas">
+          <a href="entradas.html" class="sidebar-link" data-permission="entradas.ver" title="Entradas">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>
             <span class="sidebar-link-label">Entradas</span>
           </a>
@@ -45,11 +45,11 @@
           </a>
 
           <div class="sidebar-section-label sidebar-section-spaced">ADMINISTRACIÓN</div>
-          <a href="usuarios.html" class="sidebar-link" data-permission="usuarios.ver" title="Usuarios">
+          <a href="usuarios.html" class="sidebar-link" data-permission="usuarios.ver|roles.gestionar" title="Usuarios">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20v-1.5A4.5 4.5 0 0 1 7.5 14h3a4.5 4.5 0 0 1 4.5 4.5V20"/><path d="M16 5.2a3.5 3.5 0 0 1 0 6.6M18 14.5a4.5 4.5 0 0 1 3 4.3V20"/></svg>
             <span class="sidebar-link-label">Usuarios</span>
           </a>
-          <a href="configuracion.html" class="sidebar-link" data-permission="config.editar" title="Configuración">
+          <a href="configuracion.html" class="sidebar-link" data-permission="config.ver|config.editar" title="Configuración">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.6-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.6 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2Z"/></svg>
             <span class="sidebar-link-label">Configuración</span>
           </a>
@@ -104,46 +104,33 @@
 
           <div id="dashboard-message" class="dashboard-message" role="status" hidden></div>
 
-          <section class="dashboard-metrics" aria-label="Indicadores principales">
-            <article class="metric-card metric-blue" data-metric="today-sales">
-              <div class="metric-icon" aria-hidden="true">$</div>
-              <div class="metric-copy">
-                <span>Ventas de hoy</span>
-                <strong id="metric-today-total">—</strong>
-                <small id="metric-today-count">Cargando ventas...</small>
-              </div>
-            </article>
-            <article class="metric-card metric-violet" data-metric="month-sales">
-              <div class="metric-icon" aria-hidden="true">↗</div>
-              <div class="metric-copy">
-                <span>Ventas del mes</span>
-                <strong id="metric-month-total">—</strong>
-                <small id="metric-month-count">Resumen mensual</small>
-              </div>
-            </article>
-            <article class="metric-card metric-amber" data-metric="low-stock">
-              <div class="metric-icon" aria-hidden="true">!</div>
-              <div class="metric-copy">
-                <span>Productos por reponer</span>
-                <strong id="metric-low-stock">—</strong>
-                <small id="metric-products-count">Inventario activo</small>
-              </div>
-            </article>
-            <article class="metric-card metric-green" data-metric="cash">
-              <div class="metric-icon" aria-hidden="true">▣</div>
-              <div class="metric-copy">
-                <span>Mi caja</span>
-                <strong id="metric-cash">—</strong>
-                <small>Estado de tu turno</small>
-              </div>
-            </article>
-          </section>
+          <nav class="section-tabs" aria-label="Secciones del panel">
+            <button type="button" class="section-tab" data-dashboard-tab="sales" data-permission="ventas.ver" aria-controls="panel-dashboard-sales">Resumen de ventas</button>
+            <button type="button" class="section-tab" data-dashboard-tab="activity" data-permission="productos.ver|ventas.ver|caja.ver|caja.abrir|caja.cerrar" aria-controls="panel-dashboard-activity">Actividades</button>
+            <button type="button" class="section-tab" data-dashboard-tab="reports" data-permission="reportes.ver" aria-controls="panel-dashboard-reports">Reportes</button>
+          </nav>
 
-          <section class="dashboard-content-grid">
+          <section class="dashboard-section" id="panel-dashboard-sales" data-dashboard-panel="sales" data-permission="ventas.ver">
+            <section class="dashboard-metrics" aria-label="Resumen de ventas">
+              <article class="metric-card metric-blue" data-metric="today-sales">
+                <div class="metric-copy">
+                  <span>Ventas de hoy</span>
+                  <strong id="metric-today-total">—</strong>
+                  <small id="metric-today-count">Cargando ventas...</small>
+                </div>
+              </article>
+              <article class="metric-card metric-violet" data-metric="month-sales">
+                <div class="metric-copy">
+                  <span>Ventas del mes</span>
+                  <strong id="metric-month-total">—</strong>
+                  <small id="metric-month-count">Resumen mensual</small>
+                </div>
+              </article>
+            </section>
             <article class="dashboard-panel sales-panel" data-section="sales">
               <div class="panel-heading">
                 <div>
-                  <p class="dashboard-eyebrow">ACTIVIDAD</p>
+                  <p class="dashboard-eyebrow">RESUMEN DE VENTAS</p>
                   <h2>Ventas de los últimos 7 días</h2>
                 </div>
                 <a href="ventas.html" class="panel-link" data-permission="ventas.ver">Ver ventas <span aria-hidden="true">→</span></a>
@@ -152,8 +139,28 @@
                 <p class="dashboard-loading">Cargando actividad...</p>
               </div>
             </article>
+          </section>
 
-            <article class="dashboard-panel inventory-panel" data-section="inventory">
+          <section class="dashboard-section" id="panel-dashboard-activity" data-dashboard-panel="activity" hidden>
+          <section class="dashboard-metrics" aria-label="Indicadores operativos">
+            <article class="metric-card metric-amber" data-metric="low-stock" data-permission="productos.ver">
+              <div class="metric-copy">
+                <span>Productos por reponer</span>
+                <strong id="metric-low-stock">—</strong>
+                <small id="metric-products-count">Inventario activo</small>
+              </div>
+            </article>
+            <article class="metric-card metric-green" data-metric="cash" data-permission="caja.ver|caja.abrir|caja.cerrar">
+              <div class="metric-icon" aria-hidden="true"></div>
+              <div class="metric-copy">
+                <span>Mi caja</span>
+                <strong id="metric-cash">—</strong>
+                <small>Estado de tu turno</small>
+              </div>
+            </article>
+          </section>
+          <section class="dashboard-content-grid">
+            <article class="dashboard-panel inventory-panel" data-section="inventory" data-permission="productos.ver">
               <div class="panel-heading">
                 <div>
                   <p class="dashboard-eyebrow">INVENTARIO</p>
@@ -167,7 +174,7 @@
             </article>
           </section>
 
-          <section class="dashboard-panel recent-panel" data-section="recent-sales">
+          <section class="dashboard-panel recent-panel" data-section="recent-sales" data-permission="ventas.ver">
             <div class="panel-heading">
               <div>
                 <p class="dashboard-eyebrow">MOVIMIENTOS</p>
@@ -193,6 +200,26 @@
               </table>
             </div>
           </section>
+          </section>
+
+          <section class="dashboard-section" id="panel-dashboard-reports" data-dashboard-panel="reports" data-permission="reportes.ver" hidden>
+            <article class="dashboard-panel product-impact-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="dashboard-eyebrow">INVENTARIO</p>
+                  <h2>Impacto de precios y movimientos de productos</h2>
+                  <p class="hint">Impacto estimado al precio de venta en los últimos 30 días. Incluye las subidas y bajadas de precio del producto.</p>
+                </div>
+                <a href="productos.html" class="panel-link" data-permission="productos.ver">Registrar movimientos <span aria-hidden="true">→</span></a>
+              </div>
+              <div class="chart-scroll">
+                <div id="product-impact-chart" class="sales-chart" role="img" aria-label="Gráfico de impacto monetario diario de movimientos de productos">
+                  <p class="dashboard-loading">Cargando reporte...</p>
+                </div>
+              </div>
+              <div id="product-impact-summary" class="impact-summary" aria-live="polite"></div>
+            </article>
+          </section>
 
           <footer class="dashboard-footer">
             <span>PITBULL Manager</span>
@@ -203,6 +230,7 @@
     </div>
 
     <script src="js/sesion.js"></script>
+    <script src="js/branding.js"></script>
     <script src="js/dashboard.js"></script>
   </body>
 </html>

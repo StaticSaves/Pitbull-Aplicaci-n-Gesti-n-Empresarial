@@ -121,7 +121,10 @@ try {
             break;
         // POST - Crear entrada (TRANSACCIÓN)
         case 'POST':
-            if (!tienePermiso($permisos, 'entradas.crear')) {
+            if (
+                !tienePermiso($permisos, 'entradas.crear') &&
+                !tienePermiso($permisos, 'stock.entrada')
+            ) {
                 http_response_code(403);
                 echo json_encode(['error' => 'Sin permiso']);
                 exit;
