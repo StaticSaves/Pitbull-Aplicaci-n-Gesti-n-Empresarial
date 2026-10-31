@@ -41,6 +41,6 @@ Se requiere una versión de PHP compatible con el código (PHP 8 o superior) y l
 | Nombre y Apellido | GitHub |
 | :--- | :--- |
 | **Marwin Oroño** | [@StaticSaves](https://github.com/StaticSaves) |
-| **Enyerson Ordoñes** | [@Stiven318's](https://github.com/Stiven318's) |
+| **Enyerson Ordoñes** | [@Stiven318's](https://github.com/Stiven318) |
 | **Paula Romero**  | [@Jenie2115](https://github.com/Jenie2115) |
 | **Yorbel Davila**  | [@Blaosj's](https://github.com/Blaosj's) |
