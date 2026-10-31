@@ -38,9 +38,9 @@ Se requiere una versión de PHP compatible con el código (PHP 8 o superior) y l
 
 <div align="center">
  
-| Nombre y Apellido | Rol en el Proyecto | Rama en el Proyecto | GitHub |
-| :--- | :--- | :--- | :--- |
-| **Marwin Oroño** | Lider del Proyecto y Desarrollo en General | Main | [@StaticSaves](https://github.com/StaticSaves) |
-| **Enyerson Ordoñes** | Encargado de Diseño y Diagramas | Diseños | [@Stiven318's](https://github.com/Stiven318's) |
-| **Paula Romero** | Desarrollo de la Estructura de la App | Estructura-app | [@Jenie2115](https://github.com/Jenie2115) |
-| **Yorbel Davila** | Desarrollo de la Base de Datos SQL | Desarrollo-sql | [@Blaosj's](https://github.com/Blaosj's) |
+| Nombre y Apellido | GitHub |
+| :--- | :--- |
+| **Marwin Oroño** | [@StaticSaves](https://github.com/StaticSaves) |
+| **Enyerson Ordoñes** | [@Stiven318's](https://github.com/Stiven318's) |
+| **Paula Romero**  | [@Jenie2115](https://github.com/Jenie2115) |
+| **Yorbel Davila**  | [@Blaosj's](https://github.com/Blaosj's) |
