@@ -44,4 +44,4 @@ Se requiere una versión de PHP compatible con el código (PHP 8 o superior) y l
 | **Enyerson Ordoñes**|Frontend| [@Stiven318's](https://github.com/Stiven318) |
 | **Paula Romero**    |Diseño (UI/UX)| [@Jenie2115](https://github.com/Jenie2115) |
 | **Yorbel Davila**   |Base de datos| [@Blaosj's](https://github.com/Blaosj) |
-| **Copilot**         |Control de versiones|https://github.com/apps/github-copilot-cli|
+| **Copilot**         |Control de versiones|[@Copilot](https://github.com/apps/github-copilot-cli)|
