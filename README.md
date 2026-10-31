@@ -38,9 +38,10 @@ Se requiere una versión de PHP compatible con el código (PHP 8 o superior) y l
 
 <div align="center">
  
-| Nombre y Apellido | GitHub |
-| :--- | :--- |
-| **Marwin Oroño** | [@StaticSaves](https://github.com/StaticSaves) |
-| **Enyerson Ordoñes** | [@Stiven318's](https://github.com/Stiven318) |
-| **Paula Romero**  | [@Jenie2115](https://github.com/Jenie2115) |
-| **Yorbel Davila**  | [@Blaosj's](https://github.com/Blaosj) |
+| Nombre y Apellido |Rol| GitHub |
+| :---                | :--- | :--- |
+| **Marwin Oroño**    |Backend| [@StaticSaves](https://github.com/StaticSaves) |
+| **Enyerson Ordoñes**|Frontend| [@Stiven318's](https://github.com/Stiven318) |
+| **Paula Romero**    |Diseño (UI/UX)| [@Jenie2115](https://github.com/Jenie2115) |
+| **Yorbel Davila**   |Base de datos| [@Blaosj's](https://github.com/Blaosj) |
+| **Copilot**         |Control de versiones|https://github.com/apps/github-copilot-cli|
